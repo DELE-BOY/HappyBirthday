@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome and Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #001f3f, #003366, #004080, #0059b3, #0074D9, #0088cc, #0099ff, #1E90FF,
+             #33a1ff, #4da6ff, #66b2ff, #87CEEB,#99ccff, #b3d9ff, #cce6ff, #e6f2ff, #add8e6,#b0e0e6, #c6e2ff, #696a6b);
+            color: #333;
+            transition: background-color 0.3s; /* Smooth transition */
+            position:unset; /* Required for ripple effect */
+        }
+
+        h1 {
+            color: #fff; /* White text for better contrast */
+            margin-bottom: 20px;
+        }
+
+        .epistle {
+            max-width: 600px;
+            text-align: justify;
+            margin-bottom: 20px;
+            background: rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .button {
+            background-color: #f5f5f5;
+            border: none;
+            color: rgb(0, 0, 0);
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+        .button:hover {
+            background-color: #086dca; /* Darker green on hover */
+        }
+
+        /* Modal Styles */
+        #modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.6);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 40px;
+            border: 1px solid #888;
+            width: 80%; 
+            max-width: 500px; /* Increased modal width */
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s; /* Fade-in animation */
+        }
+
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #d9534f;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Ripple effect styles */
+        .ripple {
+            position: fixed;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #001f3f, #0074D9, #1E90FF, #00BFFF, #87CEEB, #ADD8E6);
+            transform: scale(0);
+            animation: ripple-animation 0.6s ease-in-out;
+            pointer-events: none; /* Prevents interference with mouse events */
+        }
+
+        @keyframes ripple-animation {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(3); /* Adjust scale for ripple size */
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome Oluwademilade</h1>
+    <div class="epistle">
+        <p>
+            🎉 Wishing you a<span style="color: blue; text-shadow: 0 0 10px blue, 0 0 20px lightblue;"> Happy Birthday</span> filled with love, joy, and unforgettable moments! 
+            May this year bring you closer to your dreams and surround you with the people who cherish you the most. 
+            <br>
+            Today is all about celebrating you! So let’s make it a day to remember. Cheers to another fabulous year ahead! 
+            <br>
+            Sending you lots of love and a big<span style="color: blue; text-shadow: 0 0 10px blue, 0 0 20px lightblue;"> Happy Birthday</span> hug! 🎂
+        </p>
+    </div>
+    <button class="button" onclick="showVerification()">Next</button>
+
+    <!-- Modal for Verification -->
+    <div id="modal">
+        <div class="modal-content">
+            <h1>Prove Your Identity</h1>
+            <p>What does Dr(mrs) call me that's cringe and everyone needs to be considered alive?</p>
+            <input type="text" id="answer" placeholder="Enter your answer" style="width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc;">
+            <button class="button" onclick="checkAnswer()">Submit</button>
+            <div id="result" class="result"></div>
+            <button class="button" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to create the ripple effect at random positions
+        function createRipple() {
+            const ripple = document.createElement("div");
+            ripple.classList.add("ripple");
+            document.body.appendChild(ripple);
+
+            // Generate random position for ripple
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+
+            // Set the size based on window dimensions
+            const size = Math.max(window.innerWidth, window.innerHeight);
+            ripple.style.width = ripple.style.height = `${size}px`;
+
+            // Remove the ripple after animation ends
+            ripple.addEventListener("animationend", () => {
+                ripple.remove();
+            });
+        }
+
+        // Trigger the ripple effect every 2 seconds
+        setInterval(createRipple, 2000);
+
+        // Show verification modal
+        function showVerification() {
+            document.getElementById("modal").style.display = "block";
+        }
+
+        // Close the modal
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        // Check the answer
+        function checkAnswer() {
+            var answer = document.getElementById("answer").value.trim().toLowerCase();
+            var resultElement = document.getElementById("result");
+
+            if (answer === "heartbeat") {
+                resultElement.innerHTML = 'Correct! Redirecting...';
+                setTimeout(function() {
+                    window.location.href = "HappyBirthday.html";
+                }, 1000);
+            } else {
+                resultElement.innerHTML = "Unauthorized user. Please try again.";
+            }
+        }
+
+        // Close the modal when the user clicks anywhere outside of it
+        window.onclick = function(event) {
+            var modal = document.getElementById("modal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

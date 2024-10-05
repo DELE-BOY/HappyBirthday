@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #001f3f, #0074D9, #1E90FF, #00BFFF, #87CEEB, #ADD8E6);
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .button {
+            padding: 20px 50px;
+            font-size: 24px;
+            color: white;
+            background: linear-gradient(135deg, #1E90FF, #0074D9, #c3cfdb);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.2s;
+            position: relative;
+            z-index: 1; /* Ensure the button is above arrows */
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #00BFFF, #1E90FF, #0074D9);
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .button:active {
+            transform: scale(3);
+            transition: transform 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 30px solid #0074D9;
+            opacity: 0.8;
+            animation: arrowPulse 2s infinite;
+        }
+
+        /* Arrows pointing to the button */
+        .arrow.tl {
+            top: 25%;
+            left: 25%;
+            transform: rotate(135deg);
+        }
+        
+        .arrow.tr {
+            top: 25%;
+            right: 25%;
+            transform: rotate(225deg);
+        }
+
+        .arrow.bl {
+            bottom: 25%;
+            left: 25%;
+            transform: rotate(45deg);
+        }
+
+        .arrow.br {
+            bottom: 25%;
+            right: 25%;
+            transform: rotate(-45deg);
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 600px) {
+            .button {
+                font-size: 18px;
+                padding: 15px 40px;
+            }
+
+            .arrow {
+                border-bottom-width: 20px;
+                border-left-width: 10px;
+                border-right-width: 10px;
+            }
+        }
+    </style>
+    <script>
+        function handleClick(event) {
+            event.preventDefault(); // Prevent the default redirect
+            const button = event.target;
+            button.style.transform = 'scale(3)'; // Expand the button
+            button.style.transition = 'transform 0.5s ease'; // Smooth transition
+
+            // Redirect after the animation
+            setTimeout(() => {
+                window.location.href = button.getAttribute('href');
+            }, 500); // Redirect after 0.5 seconds
+        }
+    </script>
+</head>
+<body>
+
+    <div class="arrow tl"></div>
+    <div class="arrow tr"></div>
+    <div class="arrow bl"></div>
+    <div class="arrow br"></div>
+    <a href="./Welcome.html" class="button" onclick="handleClick(event)">Click Me</a>
+
+</body>
+</html>
