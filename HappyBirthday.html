@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashcards</title>
+    <title>HAPPY BIRTHDAYY!!!!!</title>
+    <link rel="icon" href="./img/icon.jpg"/>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            background: #000;
+            background: linear-gradient(135deg,#000000, #000000, #1c1c1c, #404040, #585858, #707070,#000000, #1c1c1c,#000000);
             overflow: hidden;
         }
         .background {
@@ -26,10 +28,10 @@
         }
         .square {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #fff;
-            animation: moveAndColor 5s infinite;
+            width: 35px;
+            height: 35px;
+            background: #ccc7c7;
+            animation: moveAndColor 4s infinite;
         }
         @keyframes moveAndColor {
             0%, 100% { transform: translate(0, 0); }
@@ -37,35 +39,45 @@
             50% { transform: translate(0, 20px); }
             75% { transform: translate(-10px, 10px); }
         }
-        h1 {
-            color: #ffffff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            font-size: 3rem;
+        .header {
+            text-align: center;
             margin-bottom: 2rem;
-            z-index: 1;
+        }
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #1e00df;
+            text-shadow: 2px 2px 4px rgba(88, 87, 87, 0.3);
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #87CEEB, #ADD8E6, #3571ad, #0074D9, #87CEEB, #ADD8E6, #1E90FF, #00BFFF, #87CEEB, #ADD8E6);
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .subheading {
+            color: goldenrod;
+            font-size: 1.4rem; 
+            margin-top: 0.5rem;
+            font-weight: bold;
         }
         .flashcard-container {
-            width: 300px;
-            height: 200px;
-            perspective: 1000px;
-            transition: all 0.3s ease;
+            width: 390px;
+            height: 400px;
+            perspective: 1500px;
+            transition: all 0.8s ease;
             z-index: 1;
             margin-bottom: 2rem;
         }
         .flashcard-container:hover {
-            width: 400px;
-            height: 266px;
+            width: 1200px;
+            height: 550px;
         }
         .flashcard {
             width: 100%;
             height: 100%;
             position: relative;
-            transition: transform 0.6s;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
-            border-width: 5px;
-            border-style: solid;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
             cursor: pointer;
         }
         .flashcard-front, .flashcard-back {
@@ -79,72 +91,121 @@
             justify-content: center;
             padding: 20px;
             box-sizing: border-box;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: white;
             text-align: center;
+            clip-path: path('M love-heart-1 12,10 C 0,0 0,6 5.5,12 C 11,18 12,12 12,10');
+            background: linear-gradient(135deg,  #ADD8E6,#0074D9, #1E90FF, #00BFFF, #87CEEB, #ADD8E6);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .flashcard-back {
             transform: rotateY(180deg);
         }
+        .content {
+            max-width: 80%;
+            word-wrap: break-word;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+            border-radius: 15px;
+            position: relative;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .content::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #FFB6C1, #87CEEB, #6A5ACD,#FFB6C1, #87CEEB);
+            border-radius: 18px;
+            z-index: -1;
+            filter: blur(5px);
+            animation: neonGlow 2s linear infinite;
+        }
+        @keyframes neonGlow {
+            0% { filter: blur(5px); }
+            50% { filter: blur(7px); }
+            100% { filter: blur(5px); }
+        }
         .navigation {
+            position: absolute;
+            bottom: 20px;
             display: flex;
             gap: 1rem;
-            margin-top: 1rem;
         }
         button {
-            padding: 5px 10px;
-            font-size: 0.9rem;
-            background-color: #ffffff;
-            color: #e73c7e;
-            border: none;
-            border-radius: 15px;
+            padding: 8px 15px;
+            font-size: 1rem;
+            background-color:#0074D9;
+            color: #000000;
+            border: 1px solid transparent;
+            transition: border-color 0.3s ease;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         button:hover {
-            background-color: #e73c7e;
-            color: #ffffff;
+            background-color: #38ade4;
+            border-color: #000000;
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+        .decorations {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .balloon {
+            position: absolute;
+            width: 30px;
+            height: 40px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+        .balloon::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b6b;
+            bottom: -5px;
+            left: 10px;
+            transform: rotate(45deg);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-50px) rotate(5deg); }
         }
     </style>
 </head>
 <body>
     <div class="background"></div>
-    <h1>Flashcards</h1>
+    <div class="decorations"></div>
+    <div class="header">
+        <h1>Happy Birthday!🎊🎈🎂🎉🎉🎉 <br><span style="color: #1e00df;">From many hearts, these few words</span></h1>
+        <p class="subheading">Who's the birthday girl? You're the birthday girl!!<br>Who's the birthday girl? You're the birthday girl!!!!!</p>
+    </div>
     <div class="flashcard-container">
         <div class="flashcard" id="flashcard1">
             <div class="flashcard-front">
                 <div class="content"></div>
                 <div class="navigation">
-                    <button onclick="prevCard(1)">Previous</button>
-                    <button onclick="nextCard(1)">Next</button>
+                    <button onclick="prevCard()">Previous</button>
+                    <button onclick="nextCard()">Next</button>
                 </div>
             </div>
             <div class="flashcard-back">
                 <div class="content"></div>
                 <div class="navigation">
-                    <button onclick="prevCard(1)">Previous</button>
-                    <button onclick="nextCard(1)">Next</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="flashcard-container">
-        <div class="flashcard" id="flashcard2">
-            <div class="flashcard-front">
-                <div class="content"></div>
-                <div class="navigation">
-                    <button onclick="prevCard(2)">Previous</button>
-                    <button onclick="nextCard(2)">Next</button>
-                </div>
-            </div>
-            <div class="flashcard-back">
-                <div class="content"></div>
-                <div class="navigation">
-                    <button onclick="prevCard(2)">Previous</button>
-                    <button onclick="nextCard(2)">Next</button>
+                    <button onclick="prevCard()">Previous</button>
+                    <button onclick="nextCard()">Next</button>
                 </div>
             </div>
         </div>
@@ -152,8 +213,8 @@
 
     <script>
         const birthdayMessages = [
-            "Wishing you a day filled with laughter and joy!",
-            "May all your dreams and wishes come true!",
+            "Wishing you a day filled with laughter and joy!<br>I wish you joy and happiness and all your heart's desires.",
+            "May all your dreams and wishes come true!<br>I wish you joy and hs desires",
             "Another year older, another year wiser!",
             "Sending you lots of love on your special day!",
             "Hope your birthday is as amazing as you are!",
@@ -164,76 +225,39 @@
             "Happy Birthday to a wonderful friend!"
         ];
 
-        const dateMessages = [];
-        const startDate = new Date(2024, 10, 23); // November 23, 2024
-        for (let i = 0; i < 365; i++) {
-            const currentDate = new Date(startDate);
-            currentDate.setDate(startDate.getDate() + i);
-            const dateString = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            const dayOfWeek = currentDate.getDay();
-            const message = dayOfWeek === 0 || dayOfWeek === 6 ? "Rest well" : "Go get 'em!";
-            dateMessages.push(`${dateString}\n${message}`);
-        }
+        let currentCard = 0;
+        const flashcard = document.getElementById('flashcard1');
 
-        let currentCard1 = 0;
-        let currentCard2 = 0;
-        const flashcard1 = document.getElementById('flashcard1');
-        const flashcard2 = document.getElementById('flashcard2');
-
-        function getRandomColor() {
-            const hue = Math.floor(Math.random() * 360);
-            return `hsl(${hue}, 70%, 60%)`;
-        }
-
-        function getMulticolorBorder() {
-            return `linear-gradient(45deg, 
-                ${getRandomColor()}, 
-                ${getRandomColor()}, 
-                ${getRandomColor()}, 
-                ${getRandomColor()})`;
-        }
-
-        function updateCard(flashcardId, direction) {
-            const flashcard = document.getElementById(`flashcard${flashcardId}`);
+        function updateCard(direction) {
             const frontContent = flashcard.querySelector('.flashcard-front .content');
             const backContent = flashcard.querySelector('.flashcard-back .content');
-            const collection = flashcardId === 1 ? birthdayMessages : dateMessages;
-            const currentCard = flashcardId === 1 ? currentCard1 : currentCard2;
 
-            const newMessage = collection[currentCard];
+            const newMessage = birthdayMessages[currentCard];
             const oldSide = direction === 'next' ? frontContent : backContent;
             const newSide = direction === 'next' ? backContent : frontContent;
             
-            oldSide.textContent = newMessage;
-            newSide.textContent = newMessage;
+            oldSide.style.opacity = '0';
+            newSide.style.opacity = '0';
 
-            const color = getRandomColor();
-            flashcard.querySelector('.flashcard-front').style.backgroundColor = color;
-            flashcard.querySelector('.flashcard-back').style.backgroundColor = color;
-
-            const border = getMulticolorBorder();
-            flashcard.style.borderImage = border;
-            flashcard.style.borderImageSlice = 1;
-
-            flashcard.style.transform = direction === 'next' ? 'rotateY(180deg)' : 'rotateY(0deg)';
+            setTimeout(() => {
+                oldSide.innerHTML = newMessage; // Changed to innerHTML to allow <br>
+                newSide.innerHTML = newMessage; // Changed to innerHTML to allow <br>
+                flashcard.style.transform = direction === 'next' ? 'rotateY(180deg)' : 'rotateY(0deg)';
+                setTimeout(() => {
+                    oldSide.style.opacity = '1';
+                    newSide.style.opacity = '1';
+                }, 200);
+            }, 200);
         }
 
-        function nextCard(flashcardId) {
-            if (flashcardId === 1) {
-                currentCard1 = (currentCard1 + 1) % birthdayMessages.length;
-            } else {
-                currentCard2 = (currentCard2 + 1) % dateMessages.length;
-            }
-            updateCard(flashcardId, 'next');
+        function nextCard() {
+            currentCard = (currentCard + 1) % birthdayMessages.length;
+            updateCard('next');
         }
 
-        function prevCard(flashcardId) {
-            if (flashcardId === 1) {
-                currentCard1 = (currentCard1 - 1 + birthdayMessages.length) % birthdayMessages.length;
-            } else {
-                currentCard2 = (currentCard2 - 1 + dateMessages.length) % dateMessages.length;
-            }
-            updateCard(flashcardId, 'prev');
+        function prevCard() {
+            currentCard = (currentCard - 1 + birthdayMessages.length) % birthdayMessages.length;
+            updateCard('prev');
         }
 
         function createBackground() {
@@ -253,15 +277,29 @@
             const squares = document.querySelectorAll('.square');
             squares.forEach(square => {
                 setInterval(() => {
-                    square.style.backgroundColor = getRandomColor();
+                    const hue = Math.floor(Math.random() * 360);
+                    square.style.backgroundColor = `hsl(${hue}, 70%, 60%)`;
                 }, 5000);
             });
         }
 
+        function createBalloons() {
+            const decorations = document.querySelector('.decorations');
+            for (let i = 0; i < 20; i++) {
+                const balloon = document.createElement('div');
+                balloon.classList.add('balloon');
+                balloon.style.left = `${Math.random() * 100}vw`;
+                balloon.style.top = `${Math.random() * 100}vh`;
+                balloon.style.animationDelay = `${Math.random() * 15}s`;
+                balloon.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                decorations.appendChild(balloon);
+            }
+        }
+
         createBackground();
         animateBackground();
-        updateCard(1, 'next');
-        updateCard(2, 'next');
+        createBalloons();
+        updateCard('next');
     </script>
 </body>
 </html>
