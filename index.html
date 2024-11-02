@@ -93,13 +93,14 @@
         }
     </style>
     <script>
-        function handleClick(event) {
-            event.preventDefault();
-            const button = event.currentTarget;
-            button.classList.add('active');
+         function handleClick(event) {
+            event.preventDefault(); 
+            const button = event.target;
+            button.style.transform = 'scale(3)'; 
+            button.style.transition = 'transform 0.5s ease';
             setTimeout(() => {
-                window.location.href = button.href;
-            }, 300);
+                window.location.href = button.getAttribute('href');
+            }, 500);
         }
     </script>
 </head>
