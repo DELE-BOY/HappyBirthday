@@ -14,31 +14,39 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            background: linear-gradient(135deg, #001f3f, #003366, #004080, #0059b3, #0074D9, #0088cc, #0099ff, #1E90FF,
-             #33a1ff, #4da6ff, #66b2ff, #87CEEB,#99ccff, #b3d9ff, #cce6ff, #e6f2ff, #add8e6,#b0e0e6, #c6e2ff, #696a6b);
-            color: #333;
+            background: linear-gradient(135deg, #125b77, #6fa8dc);
+            color: #fff;
             transition: background-color 0.3s;
         }
-
+        .a4-paper {
+            width: 210mm; /* A4 width */
+            height: 297mm; /* A4 height */
+            background-color: #ffffff; /* White paper */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            padding: 20mm; /* Inner padding for margins */
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            color: #333;
+            overflow: auto; /* Enable scrolling if content exceeds A4 size */
+        }
         h1 {
             color: #fff;
             margin-bottom: 20px;
         }
-
         .epistle {
             max-width: 600px;
             text-align: justify;
             margin-bottom: 20px;
-            background: rgb(255, 255, 255);
+            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #fff;
         }
-
         .button {
             background-color: #f5f5f5;
             border: none;
-            color: rgb(0, 0, 0);
+            color: #333;
             padding: 15px 32px;
             text-align: center;
             text-decoration: none;
@@ -49,11 +57,10 @@
             border-radius: 5px;
             transition: background-color 0.3s;
         }
-
         .button:hover {
             background-color: #086dca;
+            color: #fff;
         }
-
         #modal {
             display: none;
             position: fixed;
@@ -66,9 +73,8 @@
             background-color: rgba(0, 0, 0, 0.6);
             padding-top: 60px;
         }
-
         .modal-content {
-            background-color: #fefefe;
+            background-color: #fff;
             margin: 5% auto;
             padding: 40px;
             border: 1px solid #888;
@@ -79,13 +85,11 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             animation: fadeIn 0.3s;
         }
-
         .result {
             font-weight: bold;
             margin-top: 20px;
             color: #d9534f;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -124,19 +128,14 @@
     </style>
 </head>
 <body>
-    <h1>Welcome To The Point Of Trial</h1>
+    <h1>Welcome to the Seal</h1>
     <div class="epistle">
         <p>
-            🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁<br>🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁🥁<br>🎉🥳 Drumroll, please! 🥁🥁🥁<br>
-            <span style="color: blue; text-shadow: 0 0 10px blue, 0 0 20px lightblue;">Hold onto your party hats, because today is all about YOU! 🌟✨</span> 
-            <br> Rumor has it that a saxophonist might just pop out of the cake to serenade you with your favorite tunes. 🎷🎶 <br>
-            Get ready to dance like nobody's watching!
-            <br>
-            So, grab your party shoes and let's make this birthday one for the books! Cheers to another year  🎉🥂
-            <br>
-            For my next trick, I will quizing you
-            <br>
-           Prove your Identity <span style="color: rgb(224, 0, 0); text-shadow: 0 0 10px rgb(252, 0, 0), 0 0 20px lightblue;"><br>  .......Or Else</span>    
+            🥁 Drumroll, please! 🥁<br>
+            <span style="color: #add8e6; text-shadow: 0 0 10px #add8e6;">Hold onto your party hats, because today is all about YOU! 🌟✨</span><br>
+            Rumor has it that a saxophonist might just pop out of the cake to serenade you with your favorite tunes. 🎷🎶<br>
+            Get ready to dance like nobody's watching!<br>
+            So, grab your party shoes and let's make this birthday one for the books! Cheers to another amazing year! 🎉🥂
         </p>
     </div>
     <button class="button" onclick="showVerification()">Next</button>
@@ -144,9 +143,13 @@
     <div id="modal">
         <div class="modal-content">
             <h1>Prove Your Identity</h1>
-            <p><span style="color: #1e00df;">What does Dr(Mrs) call me that's cringe</span> <br> Hint: Its something everyone needs to be considered alive?</p>
-            <input type="text" id="answer" placeholder="Enter your answer"
-                style="width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc;">
+            <p>
+                <span style="color: #1e90ff;">
+                    I HAVE KEYS, BUT OPEN NO LOCKS. I HAVE A SPACE, BUT NO ROOM. YOU CAN ENTER, BUT CAN'T GO OUTSIDE
+                    
+            </p>            
+            <input type="text" id="answer" placeholder="What am I"
+                style="width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1.5px solid #000000;">
             <button class="button" onclick="checkAnswer()">Submit</button>
             <div id="result" class="result"></div>
             <button class="button" onclick="closeModal()">Close</button>
@@ -265,8 +268,8 @@
             var answer = document.getElementById("answer").value.trim().toLowerCase();
             var resultElement = document.getElementById("result");
 
-            if (answer === "my heartbeat") {
-                resultElement.innerHTML = 'Correct! Redirecting...';
+            if (answer === "piano") {
+                resultElement.innerHTML = 'Correct! WElCOMEEEE...';
                 setTimeout(function () {
                     window.location.href = "HappyBirthday.html";
                 }, 1000);
@@ -275,8 +278,8 @@
                 const errorImage = document.createElement('img');
                 errorImage.src = './img/finish.jpg';
                 errorImage.alt = 'Unauthorized Access';
-                errorImage.style.width = '200px';
-                errorImage.style.marginTop = '20px';
+                errorImage.style.width = '350px';
+                errorImage.style.marginTop = '30px';
                 resultElement.appendChild(errorImage);
             }
         }

@@ -4,20 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
-    <link rel="icon" href="./img/iconindex.jpg"/>
     <style>
+        /* Global CSS Variables */
+        :root {
+            --primary-color: #125b77;
+            --secondary-color: #6fa8dc;
+        }
+
         /* General Styles */
         body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: rgb(6, 41, 65);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #001f3f, #0074D9, #1E90FF, #00BFFF, #87CEEB, #ADD8E6);
-            font-family: 'Arial', sans-serif;
-            color: #333;
             overflow: hidden;
             position: relative;
+            background: var(--primary-color);
+        }
+
+        /* Envelope Background */
+        .envelope {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            transition: clip-path 1.4s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Opened Envelope */
+        .envelope.open {
+            clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%, 0% 0%);
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            background-color: var(--confetti-color);
+            animation: fall infinite;
+            transform-origin: top center;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(var(--rotation));
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(var(--rotation));
+                opacity: 0;
+            }
+        }
+
+        /* Title Styles */
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* Button Styles */
@@ -25,92 +87,146 @@
             padding: 20px 50px;
             font-size: 24px;
             color: white;
-            background: linear-gradient(135deg, #1E90FF, #0074D9, #c3cfdb);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border: none;
-            border-radius: 50px;
+            border-radius: 40px;
             cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: transform 0.3s ease, box-shadow 0.3s;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 1.2s;
-            position: relative;
-            z-index: 1;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
         .button:hover {
-            background: linear-gradient(135deg, #00BFFF, #1E90FF, #0074D9);
-            transform: scale(1.1);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            transform: scale(1.07);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
         }
 
-        /* Click Animation */
         .button:active {
-            transform: scale(3);
-            transition: transform 0.5s ease;
+            transform: scale(0.98);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Arrow Styles */
-        .arrow {
+        /* Preloader Styles */
+        .preloader-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--primary-color);
             position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 30px solid #0074D9;
-            opacity: 0.8;
-            animation: arrowPulse 2s infinite;
+            top: 0;
+            left: 0;
+            z-index: 10;
         }
 
-        /* Arrow Positions */
-        .arrow.tl { top: 25%; left: 25%; transform: rotate(135deg); }
-        .arrow.tr { top: 25%; right: 25%; transform: rotate(225deg); }
-        .arrow.bl { bottom: 25%; left: 25%; transform: rotate(45deg); }
-        .arrow.br { bottom: 25%; right: 25%; transform: rotate(-45deg); }
-
-        /* Keyframes */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
+        .preloader {
+            width: 64px;
+            height: 64px;
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
-        @keyframes arrowPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Responsive Styles */
         @media (max-width: 600px) {
-            .button {
-                font-size: 18px;
-                padding: 15px 40px;
+            h1 {
+                font-size: 3rem;
             }
-            .arrow {
-                border-bottom-width: 20px;
-                border-left-width: 10px;
-                border-right-width: 10px;
+            .button {
+                font-size: 20px;
+                padding: 15px 40px;
             }
         }
     </style>
-    <script>
-         function handleClick(event) {
-            event.preventDefault(); 
-            const button = event.target;
-            button.style.transform = 'scale(3)'; 
-            button.style.transition = 'transform 0.5s ease';
-            setTimeout(() => {
-                window.location.href = button.getAttribute('href');
-            }, 500);
-        }
-    </script>
 </head>
 <body>
+    <div id="root"></div>
+    <!-- React Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script>
+        const App = () => {
+            const [loading, setLoading] = React.useState(false);
+            const [opened, setOpened] = React.useState(false);
+            const [showPreloader, setShowPreloader] = React.useState(true); // Initially show preloader
 
-    <div class="arrow tl"></div>
-    <div class="arrow tr"></div>
-    <div class="arrow bl"></div>
-    <div class="arrow br"></div>
-    <a href="./Welcome.html" class="button" onclick="handleClick(event)" aria-label="Welcome Button">Click Me</a>
+            React.useEffect(() => {
+                // Hide preloader after a delay and show main content
+                const hidePreloader = setTimeout(() => {
+                    setShowPreloader(false);
+                }, 2000); // Adjust the duration as needed
 
+                return () => clearTimeout(hidePreloader); // Cleanup timeout on unmount
+            }, []);
+
+            const handleClick = () => {
+                setOpened(true); // Trigger envelope opening animation
+                setLoading(true); // Simulate loading delay
+                setTimeout(() => {
+                    window.location.href = "./Welcome.html";
+                }, 1000);
+            };
+
+            const generateConfetti = (count) => {
+                const confettiElements = [];
+                const colors = ['#ff4d4d', '#ffff66', '#66b3ff', '#ff99cc', '#99ff99'];
+                for (let i = 0; i < count; i++) {
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    const randomSize = Math.random() * 10 + 5; // Random size between 5px and 15px
+                    const randomRotation = Math.random() * 360; // Random rotation
+                    const randomDelay = Math.random() * 3; // Random delay for staggered appearance
+                    const randomLeft = Math.random() * 100 + '%'; // Random horizontal position
+                    const randomDuration = Math.random() * 3 + 3; // Random duration between 3s and 6s
+                    confettiElements.push(
+                        React.createElement('div', {
+                            className: 'confetti',
+                            style: {
+                                backgroundColor: randomColor,
+                                width: `${randomSize}px`,
+                                height: `${randomSize * 2}px`, // Make it rectangular
+                                left: randomLeft,
+                                animationDelay: `${randomDelay}s`,
+                                animationDuration: `${randomDuration}s`,
+                                '--rotation': `${randomRotation}deg`
+                            },
+                            key: i
+                        })
+                    );
+                }
+                return confettiElements;
+            };
+
+            if (showPreloader) {
+                // Render only the preloader while hiding the main content
+                return React.createElement("div", { className: "preloader-container" },
+                    React.createElement("div", { className: "preloader" })
+                );
+            }
+
+            return (
+                React.createElement("div", null,
+                    React.createElement("div", { className: `envelope ${opened ? 'open' : ''}` }),
+                    React.createElement("h1", null, "Happy Birthday! 🎉"),
+                    React.createElement("button", {
+                        className: "button",
+                        onClick: handleClick,
+                        disabled: loading
+                    },
+                        loading ? React.createElement("span", { className: "loading" }) : "Open Envelope"
+                    ),
+                    generateConfetti(100) // Increased number of confetti for a denser effect
+                )
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
 </body>
 </html>
