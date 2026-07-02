@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prove yourself </title>
+    <title>Prove yourself</title>
+    <script src="./transitions.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,23 +17,15 @@
             overflow: hidden;
             background: linear-gradient(135deg, #125b77, #6fa8dc);
             color: #fff;
-            transition: background-color 0.3s;
-        }
-        .a4-paper {
-            width: 210mm; /* A4 width */
-            height: 297mm; /* A4 height */
-            background-color: #ffffff; /* White paper */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-            padding: 20mm; /* Inner padding for margins */
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
-            color: #333;
-            overflow: auto; /* Enable scrolling if content exceeds A4 size */
         }
+
         h1 {
             color: #fff;
             margin-bottom: 20px;
+            text-align: center;
         }
+
         .epistle {
             max-width: 600px;
             text-align: justify;
@@ -43,36 +36,40 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             color: #fff;
         }
+
         .button {
             background-color: #f5f5f5;
             border: none;
             color: #333;
             padding: 15px 32px;
             text-align: center;
-            text-decoration: none;
             display: inline-block;
             font-size: 16px;
             margin: 4px 2px;
             cursor: pointer;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
-        .button:hover {
-            background-color: #086dca;
-            color: #fff;
+
+        .button:hover { background-color: #086dca; color: #fff; }
+
+        .button:focus-visible {
+            outline: 2px solid #ffffff;
+            outline-offset: 3px;
         }
+
         #modal {
             display: none;
             position: fixed;
             z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.6);
             padding-top: 60px;
+            box-sizing: border-box;
         }
+
         .modal-content {
             background-color: #fff;
             margin: 5% auto;
@@ -84,28 +81,42 @@
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             animation: fadeIn 0.3s;
+            color: #333;
         }
+
+        .modal-content h1 { color: #333; }
+
         .result {
             font-weight: bold;
             margin-top: 20px;
             color: #d9534f;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        #answer {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1.5px solid #000;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        #answer:focus {
+            outline: none;
+            border-color: #086dca;
+            box-shadow: 0 0 0 2px rgba(8, 109, 202, 0.25);
         }
 
         .ripple {
             position: absolute;
             border-radius: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background: radial-gradient(
-                circle,
-                rgba(255, 0, 128, 0.8) 0%,
-                rgba(255, 0, 128, 0.6) 40%,
-                rgba(255, 0, 128, 0.4) 60%,
-                rgba(255, 0, 128, 0) 100%
-            );
             pointer-events: none;
             opacity: 0;
             will-change: transform, opacity;
@@ -113,17 +124,17 @@
         }
 
         @keyframes rippleAnimation {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 0.9;
-            }
-            50% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 0;
-            }
+            0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
+            50%  { opacity: 0.7; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content { padding: 24px 16px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .ripple { animation: none; }
         }
     </style>
 </head>
@@ -132,7 +143,7 @@
     <div class="epistle">
         <p>
             🥁 Drumroll, please! 🥁<br>
-            <span style="color: #add8e6; text-shadow: 0 0 10px #add8e6;">Hold onto your party hats, because today is all about YOU! 🌟✨</span><br>
+            <span style="color:#add8e6;text-shadow:0 0 10px #add8e6;">Hold onto your party hats, because today is all about YOU! 🌟✨</span><br>
             Rumor has it that a saxophonist might just pop out of the cake to serenade you with your favorite tunes. 🎷🎶<br>
             Get ready to dance like nobody's watching!<br>
             So, grab your party shoes and let's make this birthday one for the books! Cheers to another amazing year! 🎉🥂
@@ -140,156 +151,128 @@
     </div>
     <button class="button" onclick="showVerification()">Next</button>
 
-    <div id="modal">
+    <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-content">
-            <h1>Prove Your Identity</h1>
+            <h1 id="modalTitle">Prove Your Identity</h1>
             <p>
-                <span style="color: #1e90ff;">
-                    I HAVE KEYS, BUT OPEN NO LOCKS. I HAVE A SPACE, BUT NO ROOM. YOU CAN ENTER, BUT CAN'T GO OUTSIDE
-                    
-            </p>            
-            <input type="text" id="answer" placeholder="What am I"
-                style="width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1.5px solid #000000;">
+                <span style="color:#1e90ff;">
+                    I HAVE KEYS, BUT OPEN NO LOCKS. I HAVE A SPACE, BUT NO ROOM. YOU CAN ENTER, BUT CAN'T GO OUTSIDE.
+                </span>
+            </p>
+            <input type="text" id="answer" placeholder="What am I?" aria-label="Your answer to the riddle">
             <button class="button" onclick="checkAnswer()">Submit</button>
-            <div id="result" class="result"></div>
+            <div id="result" class="result" role="alert" aria-live="assertive"></div>
             <button class="button" onclick="closeModal()">Close</button>
         </div>
     </div>
 
     <script>
+        /* ---- Ripple effect ---- */
         class RippleEffect {
-            constructor(options = {}) {
-                this.minSize = options.minSize || 100;
-                this.maxSize = options.maxSize || 300;
-                this.minDuration = options.minDuration || 2000;
-                this.maxDuration = options.maxDuration || 3000;
-                this.frequency = options.frequency || 100;
-                this.rippleLimit = options.rippleLimit || 20;
-                this.activeRipples = new Set();
-                
-                this.init();
-            }
-
-            init() {
-                this.createRippleInterval = setInterval(() => {
-                    if (this.activeRipples.size < this.rippleLimit) {
-                        this.createRipple();
-                    }
+            constructor(opts = {}) {
+                this.minSize     = opts.minSize     || 100;
+                this.maxSize     = opts.maxSize     || 300;
+                this.minDuration = opts.minDuration || 2000;
+                this.maxDuration = opts.maxDuration || 3000;
+                this.frequency   = opts.frequency   || 100;
+                this.rippleLimit = opts.rippleLimit || 20;
+                this.active = new Set();
+                this._interval = setInterval(() => {
+                    if (this.active.size < this.rippleLimit) this._make();
                 }, this.frequency);
             }
 
-            createRipple() {
-                const ripple = document.createElement("div");
-                ripple.classList.add("ripple");
-                
-                const x = Math.random() * window.innerWidth;
-                const y = Math.random() * window.innerHeight;
+            _make() {
+                const el   = document.createElement('div');
+                el.classList.add('ripple');
                 const size = this.minSize + Math.random() * (this.maxSize - this.minSize);
-                const duration = this.minDuration + Math.random() * (this.maxDuration - this.minDuration);
-                
-                ripple.style.left = `${x}px`;
-                ripple.style.top = `${y}px`;
-                ripple.style.width = ripple.style.height = `${size}px`;
-                ripple.style.animationDuration = `${duration}ms`;
-
-                // Array of vibrant colors
+                const dur  = this.minDuration + Math.random() * (this.maxDuration - this.minDuration);
                 const colors = [
-                    'rgba(255, 0, 128, 0.8)', // Hot Pink
-                    'rgba(255, 165, 0, 0.8)',  // Orange
-                    'rgba(255, 0, 0, 0.8)',    // Red
-                    'rgba(138, 43, 226, 0.8)', // Purple
-                    'rgba(0, 255, 127, 0.8)',  // Spring Green
+                    'rgba(255,0,128,0.8)', 'rgba(255,165,0,0.8)',
+                    'rgba(255,0,0,0.8)',   'rgba(138,43,226,0.8)',
+                    'rgba(0,255,127,0.8)',
                 ];
-                
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                ripple.style.background = `radial-gradient(
-                    circle,
-                    ${randomColor} 0%,
-                    ${randomColor.replace('0.8', '0.6')} 40%,
-                    ${randomColor.replace('0.8', '0.4')} 60%,
-                    ${randomColor.replace('0.8', '0')} 100%
-                )`;
-
-                ripple.style.willChange = 'transform, opacity';
-                
-                this.activeRipples.add(ripple);
-                document.body.appendChild(ripple);
-
-                ripple.addEventListener("animationend", () => {
-                    this.activeRipples.delete(ripple);
-                    ripple.remove();
-                }, { once: true });
+                const c = colors[Math.floor(Math.random() * colors.length)];
+                el.style.cssText = `
+                    left:${Math.random()*100}vw;top:${Math.random()*100}vh;
+                    width:${size}px;height:${size}px;
+                    animation-duration:${dur}ms;
+                    background:radial-gradient(circle,${c} 0%,${c.replace('0.8','0.6')} 40%,${c.replace('0.8','0.4')} 60%,${c.replace('0.8','0')} 100%);
+                `;
+                this.active.add(el);
+                document.body.appendChild(el);
+                el.addEventListener('animationend', () => { this.active.delete(el); el.remove(); }, { once: true });
             }
+
             destroy() {
-                clearInterval(this.createRippleInterval);
-                this.activeRipples.forEach(ripple => ripple.remove());
-                this.activeRipples.clear();
+                clearInterval(this._interval);
+                this.active.forEach(r => r.remove());
+                this.active.clear();
             }
         }
 
-        let rippleEffect = new RippleEffect({
-            minSize: 150,
-            maxSize: 400,
-            minDuration: 2000,
-            maxDuration: 3000,
-            frequency: 150,
-            rippleLimit: 15
-        });
+        const RIPPLE_CONFIG = { minSize:150, maxSize:400, minDuration:2000, maxDuration:3000, frequency:150, rippleLimit:15 };
+        let rippleEffect = new RippleEffect(RIPPLE_CONFIG);
 
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
                 rippleEffect.destroy();
-                rippleEffect = new RippleEffect({
-                    minSize: 150,
-                    maxSize: 400,
-                    minDuration: 2000,
-                    maxDuration: 3000,
-                    frequency: 150,
-                    rippleLimit: 15
-                });
+                rippleEffect = new RippleEffect(RIPPLE_CONFIG);
             }, 250);
         });
 
-        window.addEventListener('beforeunload', () => {
-            rippleEffect.destroy();
-        });
+        window.addEventListener('beforeunload', () => rippleEffect.destroy());
 
+        /* ---- Modal ---- */
         function showVerification() {
-            document.getElementById("modal").style.display = "block";
+            document.getElementById('modal').style.display = 'block';
+            setTimeout(() => document.getElementById('answer').focus(), 100);
         }
 
         function closeModal() {
-            document.getElementById("modal").style.display = "none";
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('answer').value = '';
         }
 
+        window.addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modal')) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        /* ---- Answer check — uses PageTransitions for the exit ---- */
         function checkAnswer() {
-            var answer = document.getElementById("answer").value.trim().toLowerCase();
-            var resultElement = document.getElementById("result");
+            const answer = document.getElementById('answer').value.trim().toLowerCase();
+            const result = document.getElementById('result');
 
-            if (answer === "piano") {
-                resultElement.innerHTML = 'Correct! WElCOMEEEE...';
-                setTimeout(function () {
-                    window.location.href = "HappyBirthday.html";
-                }, 1000);
+            if (answer === 'piano') {
+                result.style.color = '#2e7d32';
+                result.innerHTML   = 'Correct! WELCOMEEEEE...';
+                /* Short pause so the success message is readable,
+                   then the transition takes over */
+                setTimeout(() => {
+                    PageTransitions.navigateTo('HappyBirthday.html');
+                }, 700);
             } else {
-                resultElement.innerHTML = "EHhhhhhhh Wrong!! try again.";
-                const errorImage = document.createElement('img');
-                errorImage.src = './img/finish.jpg';
-                errorImage.alt = 'Unauthorized Access';
-                errorImage.style.width = '350px';
-                errorImage.style.marginTop = '30px';
-                resultElement.appendChild(errorImage);
+                result.style.color = '#d9534f';
+                result.innerHTML   = 'Ehhhhhhh Wrong!! Try again.';
+                const img = document.createElement('img');
+                img.src   = './img/finish.jpg';
+                img.alt   = 'Wrong answer reaction';
+                img.style.cssText = 'width:350px;max-width:100%;margin:20px auto 0;display:block;border-radius:8px;';
+                result.appendChild(img);
             }
         }
 
-        window.onclick = function(event) {
-            var modal = document.getElementById("modal");
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        }
+        /* Enter key submits; Escape is handled globally above */
+        document.getElementById('answer').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') checkAnswer();
+        });
     </script>
 </body>
 </html>

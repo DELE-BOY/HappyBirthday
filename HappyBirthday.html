@@ -6,84 +6,135 @@
     <title>HAPPY BIRTHDAYY!!!!!</title>
     <link rel="icon" href="./img/icon.jpg"/>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="./transitions.js"></script>
     <style>
+        /*
+         * KEY FIX — viewport overflow on 13-inch / small screens
+         *
+         * Root cause: layout used min-height: 100vh + fixed/vmin sizes,
+         * which doesn't account for browser chrome (address bar, tabs).
+         * On a 13-inch laptop the usable viewport can be as little as
+         * 620-680px, causing the navigation buttons to clip off-screen.
+         *
+         * Fix:
+         *  1. height: 100svh  — "small viewport height" unit, explicitly
+         *     sized to exclude browser chrome. Falls back to 100vh.
+         *  2. Every vertical dimension uses clamp(min, svh-value, max)
+         *     so the layout compresses proportionally on short screens
+         *     and expands on tall ones.
+         *  3. flex-shrink: 1 on .header lets the heading compress first,
+         *     protecting the flashcard height which is the primary content.
+         */
+
         body {
             font-family: 'Poppins', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            height: 100vh;
+            height: 100svh;
             margin: 0;
-            background: linear-gradient(135deg,#000000, #000000, #1c1c1c, #404040, #585858, #707070,#000000, #1c1c1c,#000000);
+            padding: clamp(0.3rem, 1.5svh, 1rem) clamp(0.5rem, 2vw, 1rem);
+            box-sizing: border-box;
             overflow: hidden;
+            background: linear-gradient(135deg, #000000, #000000, #1c1c1c, #404040, #585858, #707070, #000000, #1c1c1c, #000000);
         }
+
         .background {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: -1;
         }
+
         .square {
             position: absolute;
-            width: 35px;
-            height: 35px;
+            width: 35px; height: 35px;
             background: #ccc7c7;
             animation: moveAndColor 4s infinite;
         }
+
         @keyframes moveAndColor {
             0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(10px, 10px); }
-            50% { transform: translate(0, 20px); }
-            75% { transform: translate(-10px, 10px); }
+            25%       { transform: translate(10px, 10px); }
+            50%       { transform: translate(0, 20px); }
+            75%       { transform: translate(-10px, 10px); }
         }
+
+        /* Header compresses on short viewports before the card does */
         .header {
             text-align: center;
-            margin-bottom: 2rem;
+            flex-shrink: 1;
+            margin-bottom: clamp(0.3rem, 1.5svh, 1.25rem);
+            padding: 0 0.5rem;
         }
+
         h1 {
             font-family: 'Dancing Script', cursive;
             color: #000b4d;
             text-shadow: 2px 2px 4px rgba(88, 87, 87, 0.3);
             letter-spacing: 2px;
             background: linear-gradient(135deg, #87CEEB, #ADD8E6, #3571ad, #0074D9, #87CEEB, #ADD8E6, #1E90FF, #00BFFF, #87CEEB, #ADD8E6);
-            padding: 15px 30px;
             border-radius: 15px;
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            /* min(4vw, 4.5svh): shrinks on BOTH narrow AND short screens */
+            font-size: clamp(1.1rem, min(4vw, 4.5svh), 3rem);
+            padding: clamp(8px, 1.2svh, 15px) clamp(12px, 2.5vw, 30px);
+            margin-bottom: clamp(0.25rem, 0.8svh, 1rem);
+            line-height: 1.3;
         }
+
         .subheading {
             color: goldenrod;
-            font-size: 1.4rem; 
-            margin-top: 0.5rem;
+            font-size: clamp(0.72rem, min(2vw, 2.2svh), 1.4rem);
             font-weight: bold;
+            line-height: 1.4;
+            margin: 0;
         }
+
+        .card-counter {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: clamp(0.65rem, 1.5svh, 0.85rem);
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: clamp(0.2rem, 0.8svh, 0.65rem);
+            min-height: 1.2em;
+            flex-shrink: 0;
+        }
+
+        /*
+         * Flashcard container height is now svh-based:
+         * 38svh → ~258px at 680px viewport (13-inch with chrome)
+         *       → ~342px at 900px viewport (iPad/large laptop)
+         * Both comfortably fit within the screen.
+         */
         .flashcard-container {
-            width: 700px;
-            height: 350px;
+            width: min(700px, 93vw);
+            height: clamp(175px, 38svh, 350px);
             perspective: 1500px;
             transition: all 0.7s ease;
             z-index: 1;
-            margin-bottom: 2rem;
+            margin-bottom: clamp(0.2rem, 0.8svh, 0.75rem);
+            flex-shrink: 0;
         }
+
         .flashcard-container:hover {
-            width: 1000px;
-            height: 400px;
+            width: min(1000px, 96vw);
+            height: clamp(200px, 44svh, 400px);
         }
+
         .flashcard {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             position: relative;
             transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
-            cursor: pointer;
+            cursor: default;
         }
-        .flashcard-front, .flashcard-back {
+
+        .flashcard-front,
+        .flashcard-back {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             backface-visibility: hidden;
             display: flex;
             flex-direction: column;
@@ -91,218 +142,279 @@
             justify-content: center;
             padding: 20px;
             box-sizing: border-box;
-            font-size: 1.5rem;
             color: white;
             text-align: center;
-            clip-path: path('M love-heart-1 12,10 C 0,0 0,6 5.5,12 C 11,18 12,12 12,10');
-            background: linear-gradient(135deg,  #ADD8E6,#0074D9, #1E90FF, #00BFFF, #87CEEB, #ADD8E6);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 16px;
+            background: linear-gradient(135deg, #ADD8E6, #0074D9, #1E90FF, #00BFFF, #87CEEB, #ADD8E6);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
+
         .flashcard-back {
             transform: rotateY(180deg);
         }
+
         .content {
-            max-width: 80%;
+            max-width: 85%;
             word-wrap: break-word;
             opacity: 1;
-            transition: opacity 0.4s ease;
-            padding: 20px;
+            transition: opacity 0.3s ease;
+            padding: clamp(10px, 1.5svh, 20px) clamp(12px, 2vw, 20px);
             border-radius: 15px;
             position: relative;
             background-color: rgba(0, 0, 0, 0.6);
+            font-size: clamp(0.72rem, min(1.6vw, 1.9svh), 1rem);
+            line-height: 1.6;
         }
+
         .content::before {
             content: '';
             position: absolute;
-            top: -3px;
-            left: -3px;
-            right: -3px;
-            bottom: -3px;
-            background: linear-gradient(45deg, #FFB6C1, #87CEEB, #6A5ACD,#FFB6C1, #87CEEB);
+            top: -3px; left: -3px; right: -3px; bottom: -3px;
+            background: linear-gradient(45deg, #FFB6C1, #87CEEB, #6A5ACD, #FFB6C1, #87CEEB);
             border-radius: 18px;
             z-index: -1;
             filter: blur(5px);
             animation: neonGlow 2s linear infinite;
         }
+
         @keyframes neonGlow {
-            0% { filter: blur(5px); }
-            50% { filter: blur(7px); }
+            0%   { filter: blur(5px); }
+            50%  { filter: blur(7px); }
             100% { filter: blur(5px); }
         }
+
         .navigation {
             position: absolute;
-            bottom: 20px;
+            bottom: clamp(8px, 1.5svh, 16px);
             display: flex;
-            gap: 1rem;
+            gap: clamp(0.5rem, 2vw, 1rem);
         }
+
         button {
-            padding: 8px 15px;
-            font-size: 1rem;
-            background-color:#0074D9;
-            color: #000000;
+            padding: clamp(5px, 0.9svh, 8px) clamp(12px, 2vw, 18px);
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(0.68rem, min(1.3vw, 1.6svh), 1rem);
+            font-weight: 600;
+            background-color: #0074D9;
+            color: #ffffff;
             border: 1px solid transparent;
-            transition: border-color 0.3s ease;
             border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.3s, border-color 0.3s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
+
         button:hover {
             background-color: #38ade4;
-            border-color: #000000;
+            border-color: rgba(255, 255, 255, 0.5);
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
         }
+
+        button:active { transform: translateY(0); }
+
+        button:focus-visible {
+            outline: 2px solid #87CEEB;
+            outline-offset: 3px;
+        }
+
+        .nav-hint {
+            color: rgba(255, 255, 255, 0.32);
+            font-size: clamp(0.58rem, 1.4svh, 0.72rem);
+            letter-spacing: 0.8px;
+            user-select: none;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
         .decorations {
             position: fixed;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: -1;
         }
+
         .balloon {
             position: absolute;
-            width: 30px;
-            height: 40px;
-            background: #ff6b6b;
+            width: 30px; height: 40px;
             border-radius: 50%;
             animation: float 15s infinite;
         }
+
         .balloon::before {
             content: '';
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #ff6b6b;
-            bottom: -5px;
-            left: 10px;
+            width: 10px; height: 10px;
+            background: inherit;
+            bottom: -5px; left: 10px;
             transform: rotate(45deg);
         }
+
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-50px) rotate(5deg); }
+            50%       { transform: translateY(-50px) rotate(5deg); }
+        }
+
+        @media (max-width: 480px) {
+            .nav-hint { display: none; }
+        }
+
+        /* Landscape phone: hide subheading to reclaim vertical space */
+        @media (max-height: 500px) {
+            .subheading { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .flashcard, .flashcard-container { transition: none; }
+            .square, .balloon { animation: none; }
+            .content::before  { animation: none; }
         }
     </style>
 </head>
 <body>
-    <div class="background"></div>
-    <div class="decorations"></div>
-    <div class="header">
-        <h1>Happy Birthday!🎉🎉🎉🎈🎂<br><span style="color: #000418;">From many hearts, these few words</span></h1>
-        <p class="subheading">Who's the birthday girl? You're the birthday girl!!<br>Who's the birthday girl? You're the birthday girl!!!!!</p>
-    </div>
-    <div class="flashcard-container">
+    <div class="background" aria-hidden="true"></div>
+    <div class="decorations" aria-hidden="true"></div>
+
+    <header class="header">
+        <h1>
+            Happy Birthday!🎉🎉🎉🎈🎂<br>
+            <span style="color:#000418;">From many hearts, these few words</span>
+        </h1>
+        <p class="subheading">
+            Who's the birthday girl? You're the birthday girl!!<br>
+            Who's the birthday girl? You're the birthday girl!!!!!
+        </p>
+    </header>
+
+    <div class="card-counter" id="cardCounter" aria-live="polite">1 / 8</div>
+
+    <div class="flashcard-container" role="region" aria-label="Birthday messages">
         <div class="flashcard" id="flashcard1">
             <div class="flashcard-front">
-                <div class="content"></div>
-                <div class="navigation">
-                    <button onclick="prevCard()">Previous</button>
-                    <button onclick="nextCard()">Next</button>
-                </div>
+                <div class="content" id="frontContent"></div>
+                <nav class="navigation">
+                    <button onclick="prevCard()" aria-label="Previous message">← Previous</button>
+                    <button onclick="nextCard()" aria-label="Next message">Next →</button>
+                </nav>
             </div>
-            <div class="flashcard-back">
-                <div class="content"></div>
-                <div class="navigation">
-                    <button onclick="prevCard()">Previous</button>
-                    <button onclick="nextCard()">Next</button>
-                </div>
+            <div class="flashcard-back" aria-hidden="true">
+                <div class="content" id="backContent"></div>
+                <nav class="navigation">
+                    <button onclick="prevCard()" aria-label="Previous message">← Previous</button>
+                    <button onclick="nextCard()" aria-label="Next message">Next →</button>
+                </nav>
             </div>
         </div>
     </div>
 
+    <p class="nav-hint" aria-hidden="true">← → arrow keys &nbsp;·&nbsp; swipe on mobile</p>
+
     <script>
         const birthdayMessages = [
-           "Disclaimer: I am impersonating these people and offering my rendition of what I think their wishes would sound like.",
-            "<span style='color: #ffcc00;'>DELE</span><br>Hiiiii, Happy Happy Birthdayy!<br>I'm not going to get sentimental in public, but I just wanted to say you're the most amazing, helpful, caring, beautiful soul, and I pray that everything you touch prospers and that all your heart's desires are granted. In Jesus' name, Amen.",
-            "<span style='color: #ffcc00;'>MEZIE</span><br>Happy Birthday, Demi! Although we've only had one conversation, I could tell how smart and insightful you are, and I appreciate all the help you gave, even though you don’t even know me.<br>I wish you joy, happiness, and all your heart's desires.",
-            
-            "<span style='color: #ffcc00;'>JESSICA</span><br>Happy Birthday, Demilade!<br>I pray you continue to excel in everything you do.<br>From one first-class Babcock student to another:<br>REAL RECOGNIZE REAL!",
-            
-            "<span style='color: #ffcc00;'>CHISOM</span><br>Hiiiiii! Happy Birthdayyy!<br>I know we've never spoken, but I've heard so much about how amazing you are, and I pray your life is filled with love and all the beautiful things you inspire in other people.",
-            
-            "<span style='color: #ffcc00;'>On behalf of my Brother</span><br>Happy Birthday, Oluwademilade!<br>I pray you have the best year yet and continue to shine bright. Amen.",
-            
-            "<span style='color: #ffcc00;'>PETRA</span><br>Happy Birthday, Demiii!<br>Thank you for being such an amazing person and for checking up on and taking care of me.<br>I wish you so many amazing things, and I pray you continue to flourish in all you do. I love you, and thank you for being my friend whom I can depend on.",
-            
+            "Disclaimer: I am impersonating these people and offering my rendition of what I think their wishes would sound like.",
+            "<span style='color:#ffcc00;'>DELE</span><br>Hiiiii, Happy Happy Birthdayy!<br>I'm not going to get sentimental in public, but I just wanted to say you're the most amazing, helpful, caring, beautiful soul, and I pray that everything you touch prospers and that all your heart's desires are granted. In Jesus' name, Amen.",
+            "<span style='color:#ffcc00;'>MEZIE</span><br>Happy Birthday, Demi! Although we've only had one conversation, I could tell how smart and insightful you are, and I appreciate all the help you gave, even though you don't even know me.<br>I wish you joy, happiness, and all your heart's desires.",
+            "<span style='color:#ffcc00;'>JESSICA</span><br>Happy Birthday, Demilade!<br>I pray you continue to excel in everything you do.<br>From one first-class Babcock student to another:<br>REAL RECOGNIZE REAL!",
+            "<span style='color:#ffcc00;'>CHISOM</span><br>Hiiiiii! Happy Birthdayyy!<br>I know we've never spoken, but I've heard so much about how amazing you are, and I pray your life is filled with love and all the beautiful things you inspire in other people.",
+            "<span style='color:#ffcc00;'>On behalf of my Brother</span><br>Happy Birthday, Oluwademilade!<br>I pray you have the best year yet and continue to shine bright. Amen.",
+            "<span style='color:#ffcc00;'>PETRA</span><br>Happy Birthday, Demiii!<br>Thank you for being such an amazing person and for checking up on and taking care of me.<br>I wish you so many amazing things, and I pray you continue to flourish in all you do. I love you, and thank you for being my friend whom I can depend on.",
             "May this year bring you success and happiness! Cheers to another year of amazing adventures!<br>Happy Birthday, Oluwademilade!<br>I wish you all the best things in life."
-                                ];
+        ];
 
-        let currentCard = 0;
-        const flashcard = document.getElementById('flashcard1');
+        const flashcard    = document.getElementById('flashcard1');
+        const frontContent = document.getElementById('frontContent');
+        const backContent  = document.getElementById('backContent');
+        const cardCounter  = document.getElementById('cardCounter');
 
-        function updateCard(direction) {
-            const frontContent = flashcard.querySelector('.flashcard-front .content');
-            const backContent = flashcard.querySelector('.flashcard-back .content');
+        let currentCard   = 0;
+        let isShowingBack = false;
+        let isAnimating   = false;
 
-            const newMessage = birthdayMessages[currentCard];
-            const oldSide = direction === 'next' ? frontContent : backContent;
-            const newSide = direction === 'next' ? backContent : frontContent;
-            
-            oldSide.style.opacity = '0';
-            newSide.style.opacity = '0';
+        function updateCounter() {
+            cardCounter.textContent = `${currentCard + 1} / ${birthdayMessages.length}`;
+        }
 
-            setTimeout(() => {
-                oldSide.innerHTML = newMessage; // Changed to innerHTML to allow <br>
-                newSide.innerHTML = newMessage; // Changed to innerHTML to allow <br>
-                flashcard.style.transform = direction === 'next' ? 'rotateY(180deg)' : 'rotateY(0deg)';
-                setTimeout(() => {
-                    oldSide.style.opacity = '1';
-                    newSide.style.opacity = '1';
-                }, 200);
-            }, 200);
+        function showCard() {
+            if (isAnimating) return;
+            isAnimating = true;
+            const msg = birthdayMessages[currentCard];
+            if (isShowingBack) {
+                frontContent.innerHTML = msg;
+            } else {
+                backContent.innerHTML  = msg;
+            }
+            isShowingBack = !isShowingBack;
+            flashcard.style.transform = isShowingBack ? 'rotateY(180deg)' : 'rotateY(0deg)';
+            updateCounter();
+            setTimeout(() => { isAnimating = false; }, 850);
         }
 
         function nextCard() {
             currentCard = (currentCard + 1) % birthdayMessages.length;
-            updateCard('next');
+            showCard();
         }
 
         function prevCard() {
             currentCard = (currentCard - 1 + birthdayMessages.length) % birthdayMessages.length;
-            updateCard('prev');
+            showCard();
         }
 
-        function createBackground() {
-            const background = document.querySelector('.background');
-            for (let i = 0; i < 100; i++) {
-                const square = document.createElement('div');
-                square.classList.add('square');
-                square.style.left = `${Math.random() * 100}vw`;
-                square.style.top = `${Math.random() * 100}vh`;
-                square.style.animationDelay = `${Math.random() * 5}s`;
-                square.style.animationDuration = `${5 + Math.random() * 5}s`;
-                background.appendChild(square);
+        document.addEventListener('keydown', (e) => {
+            if      (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextCard();
+            else if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prevCard();
+        });
+
+        let touchStartX = 0, touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            const dx = touchStartX - e.changedTouches[0].clientX;
+            const dy = touchStartY - e.changedTouches[0].clientY;
+            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+                dx > 0 ? nextCard() : prevCard();
             }
+        }, { passive: true });
+
+        function createBackground() {
+            const bg = document.querySelector('.background');
+            const frag = document.createDocumentFragment();
+            for (let i = 0; i < 80; i++) {
+                const sq = document.createElement('div');
+                sq.classList.add('square');
+                sq.style.cssText = `left:${(Math.random()*100).toFixed(1)}vw;top:${(Math.random()*100).toFixed(1)}vh;animation-delay:${(Math.random()*5).toFixed(2)}s;animation-duration:${(5+Math.random()*5).toFixed(2)}s;`;
+                frag.appendChild(sq);
+            }
+            bg.appendChild(frag);
         }
 
         function animateBackground() {
-            const squares = document.querySelectorAll('.square');
-            squares.forEach(square => {
+            document.querySelectorAll('.square').forEach(sq => {
                 setInterval(() => {
-                    const hue = Math.floor(Math.random() * 360);
-                    square.style.backgroundColor = `hsl(${hue}, 70%, 60%)`;
+                    sq.style.backgroundColor = `hsl(${Math.floor(Math.random()*360)},70%,60%)`;
                 }, 5000);
             });
         }
 
         function createBalloons() {
-            const decorations = document.querySelector('.decorations');
+            const dec = document.querySelector('.decorations');
+            const frag = document.createDocumentFragment();
             for (let i = 0; i < 20; i++) {
-                const balloon = document.createElement('div');
-                balloon.classList.add('balloon');
-                balloon.style.left = `${Math.random() * 100}vw`;
-                balloon.style.top = `${Math.random() * 100}vh`;
-                balloon.style.animationDelay = `${Math.random() * 15}s`;
-                balloon.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
-                decorations.appendChild(balloon);
+                const b = document.createElement('div');
+                b.classList.add('balloon');
+                b.style.cssText = `left:${(Math.random()*100).toFixed(1)}vw;top:${(Math.random()*100).toFixed(1)}vh;animation-delay:${(Math.random()*15).toFixed(2)}s;background-color:hsl(${Math.floor(Math.random()*360)},70%,60%);`;
+                frag.appendChild(b);
             }
+            dec.appendChild(frag);
         }
 
+        frontContent.innerHTML = birthdayMessages[0];
+        backContent.innerHTML  = birthdayMessages[0];
+        updateCounter();
         createBackground();
         animateBackground();
         createBalloons();
-        updateCard('next');
     </script>
 </body>
 </html>
