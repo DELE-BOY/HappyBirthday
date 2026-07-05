@@ -33,9 +33,16 @@ const PageTransitions = (function () {
      * instead of the standard flat-overlay fade. */
     const CURTAIN_PAGES = new Set(['HappyBirthday.html']);
 
-    const FADE_DURATION    = 520; // ms — flat overlay fade
-    const CURTAIN_DURATION = 880; // ms — curtain slide duration
-    const CURTAIN_DELAY    = 180; // ms — brief held-breath pause before curtains open
+    const FADE_DURATION    = 520;  // ms — flat overlay fade
+    const CURTAIN_DURATION = 1500; // ms — curtain slide (slow, theatrical)
+    const CURTAIN_DELAY    = 500;  // ms — held-breath pause before curtains open
+    /*
+     * Total curtain time: 500 + 1500 = 2000ms.
+     * HappyBirthday.html's animated squares and balloons take 2-3s to
+     * fully initialise, so the curtain naturally acts as a preloader buffer —
+     * the page is alive and colourful by the time the curtains complete
+     * their reveal.
+     */
 
     let overlay = null;
 

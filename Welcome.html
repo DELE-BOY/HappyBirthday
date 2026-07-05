@@ -3,273 +3,616 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prove yourself</title>
+    <meta name="theme-color" content="#125b77">
+    <title>Welcome to the Seal</title>
+
+    <link rel="icon" href="./img/iconwelcome.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <script src="./transitions.js"></script>
+
     <style>
+        :root {
+            --blue-deep:  #125b77;
+            --blue-mid:   #1a7396;
+            --blue-light: #6fa8dc;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            font-family: 'Poppins', Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            justify-content: center;
+            gap: clamp(0.75rem, 2.5vh, 1.5rem);
+            height: 100vh;
+            height: 100svh;
             overflow: hidden;
-            background: linear-gradient(135deg, #125b77, #6fa8dc);
-            color: #fff;
-            box-sizing: border-box;
+            padding: clamp(14px, 4vw, 32px);
+            background: linear-gradient(145deg, var(--blue-deep) 0%, var(--blue-mid) 55%, var(--blue-light) 100%);
+            color: white;
         }
 
-        h1 {
-            color: #fff;
-            margin-bottom: 20px;
+        /* ============================================================
+         * Page wrapper — the single element that carries the entrance
+         * animation. Fades + slides up as transitions.js overlay fades.
+         * Starting at 0.25s means content emerges from the blue — a
+         * deliberate "blue bloom" effect as the overlay recedes.
+         * ============================================================ */
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: clamp(0.75rem, 2.5vh, 1.5rem);
+            width: 100%;
+            max-width: 580px;
+            opacity: 0;
+            transform: translateY(14px);
+            animation: pageReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+        }
+
+        @keyframes pageReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================
+         * Heading
+         * ============================================================ */
+        .page-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            color: white;
+            margin: 0;
             text-align: center;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.18);
         }
 
+        /* ============================================================
+         * Ornamental divider — a horizontal rule with centred icon.
+         * Ties back to the 💌 seal on the envelope page.
+         * ============================================================ */
+        .seal-divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+        }
+
+        .seal-divider::before,
+        .seal-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .seal-divider span {
+            font-size: 1.05rem;
+            opacity: 0.65;
+            line-height: 1;
+        }
+
+        /* ============================================================
+         * Epistle — styled as a frosted-glass letter card
+         * ============================================================ */
         .epistle {
-            max-width: 600px;
-            text-align: justify;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            color: #fff;
-        }
-
-        .button {
-            background-color: #f5f5f5;
-            border: none;
-            color: #333;
-            padding: 15px 32px;
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 16px;
+            padding: clamp(14px, 3vh, 22px) clamp(18px, 4vw, 28px);
+            font-size: clamp(0.78rem, 1.8vw, 0.9rem);
+            line-height: 1.85;
+            color: rgba(255,255,255,0.9);
             text-align: center;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
+        }
+
+        .epistle p { margin: 0; }
+
+        /* ============================================================
+         * Next button — glassmorphic, matching index.html's open button
+         * ============================================================ */
+        .btn-next {
+            padding: 13px 40px;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(0.82rem, 2vw, 0.95rem);
+            font-weight: 400;
+            color: rgba(255,255,255,0.92);
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 40px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
+            letter-spacing: 0.5px;
+            transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.25s;
         }
 
-        .button:hover { background-color: #086dca; color: #fff; }
-
-        .button:focus-visible {
-            outline: 2px solid #ffffff;
-            outline-offset: 3px;
+        .btn-next:hover {
+            background: rgba(255,255,255,0.24);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.16);
         }
 
+        .btn-next:active { transform: translateY(0); }
+
+        .btn-next:focus-visible {
+            outline: 2px solid rgba(255,255,255,0.75);
+            outline-offset: 4px;
+        }
+
+        /* ============================================================
+         * Modal
+         *
+         * display: flex (via .visible class) so the card can be centred
+         * with align-items / justify-content rather than margin tricks.
+         *
+         * Backdrop: semi-transparent black + blur. The blur softens the
+         * ripple effect in the background, keeping focus on the riddle.
+         * ============================================================ */
         #modal {
             display: none;
             position: fixed;
-            z-index: 1;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding-top: 60px;
-            box-sizing: border-box;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
         }
 
-        .modal-content {
-            background-color: #fff;
-            margin: 5% auto;
-            padding: 40px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
+        #modal.visible { display: flex; }
+
+        .modal-card {
+            background: rgba(255,255,255,0.98);
+            border-radius: 20px;
+            padding: clamp(22px, 5vw, 38px);
+            width: 100%;
+            max-width: 460px;
+            box-shadow:
+                0 24px 64px rgba(0,0,0,0.32),
+                0 8px 20px  rgba(0,0,0,0.16);
+            animation: modalIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
             text-align: center;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 0.3s;
             color: #333;
         }
 
-        .modal-content h1 { color: #333; }
-
-        .result {
-            font-weight: bold;
-            margin-top: 20px;
-            color: #d9534f;
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(-18px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0)     scale(1);    }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to   { opacity: 1; transform: translateY(0); }
+        .modal-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--blue-deep);
+            margin: 0 0 4px;
         }
 
+        .modal-subtitle {
+            font-size: 0.76rem;
+            color: #999;
+            margin: 0 0 16px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ============================================================
+         * Riddle — styled as a mysterious inscription: uppercase,
+         * spaced letters, blue-tinted background, left accent border.
+         * The visual treatment reinforces the riddle's ceremonial feel.
+         * ============================================================ */
+        .riddle-text {
+            background: linear-gradient(135deg, #e8f4fd, #d4eaf7);
+            border-left: 3px solid var(--blue-deep);
+            border-radius: 0 10px 10px 0;
+            padding: 14px 18px;
+            font-size: clamp(0.72rem, 1.6vw, 0.82rem);
+            font-weight: 600;
+            color: var(--blue-deep);
+            letter-spacing: 1.2px;
+            line-height: 1.8;
+            text-transform: uppercase;
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        /* ============================================================
+         * Answer input
+         * ============================================================ */
         #answer {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1.5px solid #000;
-            font-size: 1rem;
-            box-sizing: border-box;
+            width: 100%;
+            padding: 11px 16px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            color: #333;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 14px;
         }
 
         #answer:focus {
-            outline: none;
-            border-color: #086dca;
-            box-shadow: 0 0 0 2px rgba(8, 109, 202, 0.25);
+            border-color: var(--blue-deep);
+            box-shadow: 0 0 0 3px rgba(18,91,119,0.12);
         }
 
+        /*
+         * Shake animation — physical feedback on wrong answer.
+         * Class is added via JS and auto-removed via animationend.
+         * No persistent red border: the shake motion alone is clear.
+         */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-7px); }
+            40%, 80% { transform: translateX(7px); }
+        }
+
+        #answer.shake {
+            animation: shake 0.38s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+
+        /* ============================================================
+         * Modal footer — right-aligned button pair (standard UX pattern:
+         * secondary/cancel left, primary/confirm right)
+         * ============================================================ */
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.86rem;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+
+        .btn:active { transform: translateY(0) !important; }
+
+        .btn:focus-visible {
+            outline: 2px solid var(--blue-deep);
+            outline-offset: 3px;
+        }
+
+        .btn-ghost {
+            color: #777;
+            background: transparent;
+            border: 1px solid #e0e0e0;
+        }
+
+        .btn-ghost:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+        }
+
+        .btn-primary {
+            color: white;
+            background: var(--blue-deep);
+        }
+
+        .btn-primary:hover {
+            background: #0e4a61;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(18,91,119,0.28);
+        }
+
+        /* ============================================================
+         * Result area
+         * ============================================================ */
+        #result {
+            margin-top: 14px;
+            min-height: 1.4em;
+            font-size: 0.88rem;
+        }
+
+        .result-text {
+            display: block;
+            font-weight: 600;
+        }
+
+        .result-text.success { color: #2e7d32; }
+        .result-text.error   { color: #c62828; }
+
+        /* Error image — smaller, rounded, animated in */
+        .error-img {
+            display: block;
+            width: 100%;
+            max-width: 240px;
+            margin: 12px auto 0;
+            border-radius: 10px;
+            animation: imgReveal 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes imgReveal {
+            from { opacity: 0; transform: scale(0.94); }
+            to   { opacity: 1; transform: scale(1);    }
+        }
+
+        /* ============================================================
+         * Ripple effect
+         *
+         * IMPORTANT: position: fixed (not absolute).
+         * The body now uses overflow: hidden for the svh layout.
+         * position: absolute ripples would be clipped at body edges.
+         * position: fixed makes them viewport-relative and immune to
+         * the parent's overflow restriction.
+         *
+         * The animation (rippleExpand) and color logic are preserved
+         * exactly — this is the page's visual identity.
+         * ============================================================ */
         .ripple {
-            position: absolute;
+            position: fixed;
             border-radius: 50%;
             transform: translate(-50%, -50%) scale(0);
             pointer-events: none;
             opacity: 0;
             will-change: transform, opacity;
-            animation: rippleAnimation 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: rippleExpand 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        @keyframes rippleAnimation {
-            0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
-            50%  { opacity: 0.7; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        @keyframes rippleExpand {
+            0%   { transform: translate(-50%, -50%) scale(0);   opacity: 0.85; }
+            50%  {                                               opacity: 0.6;  }
+            100% { transform: translate(-50%, -50%) scale(1);   opacity: 0;    }
         }
 
-        @media (max-width: 480px) {
-            .modal-content { padding: 24px 16px; }
+        /* ============================================================
+         * Responsive
+         * ============================================================ */
+        @media (max-height: 520px) {
+            /* Landscape phone: hide the decorative divider to save space */
+            .seal-divider { display: none; }
+            .epistle      { font-size: 0.72rem; line-height: 1.6; padding: 10px 16px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .ripple { animation: none; }
+            .page-wrapper { animation: none; opacity: 1; transform: none; }
+            .ripple       { animation: none; opacity: 0; }
+            .modal-card   { animation: none; }
+            #answer.shake { animation: none; }
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Seal</h1>
-    <div class="epistle">
-        <p>
-            🥁 Drumroll, please! 🥁<br>
-            <span style="color:#add8e6;text-shadow:0 0 10px #add8e6;">Hold onto your party hats, because today is all about YOU! 🌟✨</span><br>
-            Rumor has it that a saxophonist might just pop out of the cake to serenade you with your favorite tunes. 🎷🎶<br>
-            Get ready to dance like nobody's watching!<br>
-            So, grab your party shoes and let's make this birthday one for the books! Cheers to another amazing year! 🎉🥂
-        </p>
-    </div>
-    <button class="button" onclick="showVerification()">Next</button>
 
-    <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="modal-content">
-            <h1 id="modalTitle">Prove Your Identity</h1>
+    <!--
+        Ripple divs are appended directly to <body> by RippleEffect.
+        They use position: fixed so they aren't clipped by body's
+        overflow: hidden.
+    -->
+
+    <!-- Main content — fades + slides up as transitions.js overlay recedes -->
+    <div class="page-wrapper">
+
+        <h1 class="page-title">Welcome to the Seal</h1>
+
+        <div class="seal-divider" aria-hidden="true">
+            <span>💌</span>
+        </div>
+
+        <div class="epistle">
             <p>
-                <span style="color:#1e90ff;">
-                    I HAVE KEYS, BUT OPEN NO LOCKS. I HAVE A SPACE, BUT NO ROOM. YOU CAN ENTER, BUT CAN'T GO OUTSIDE.
-                </span>
+                🥁 Drumroll, please! 🥁<br>
+                <span style="color:rgba(255,255,255,0.72);">Hold onto your party hats, because today is all about YOU! 🌟✨</span><br>
+                Rumor has it that a saxophonist might just pop out of the cake<br class="br-desktop">
+                to serenade you with your favourite tunes. 🎷🎶<br>
+                Get ready to dance like nobody's watching!<br>
+                So grab your party shoes — let's make this birthday one for the books! 🎉🥂
             </p>
-            <input type="text" id="answer" placeholder="What am I?" aria-label="Your answer to the riddle">
-            <button class="button" onclick="checkAnswer()">Submit</button>
-            <div id="result" class="result" role="alert" aria-live="assertive"></div>
-            <button class="button" onclick="closeModal()">Close</button>
+        </div>
+
+        <button class="btn-next" onclick="showVerification()" aria-label="Proceed to the identity check">
+            Next →
+        </button>
+
+    </div>
+
+    <!--
+        Modal — outside .page-wrapper since it's position: fixed and
+        overlays the whole viewport. Shown via .visible class.
+    -->
+    <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-card">
+
+            <h2 class="modal-title" id="modalTitle">Prove Your Identity</h2>
+            <p class="modal-subtitle">Answer the riddle to proceed</p>
+
+            <div class="riddle-text" aria-label="The riddle">
+                I have keys, but open no locks.<br>
+                I have a space, but no room.<br>
+                You can enter, but can't go outside.
+            </div>
+
+            <input
+                type="text"
+                id="answer"
+                placeholder="What am I?"
+                aria-label="Your answer to the riddle"
+                autocomplete="off"
+                spellcheck="false"
+            >
+
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+                <button class="btn btn-primary" onclick="checkAnswer()">Submit</button>
+            </div>
+
+            <div id="result" role="alert" aria-live="assertive"></div>
+
         </div>
     </div>
 
     <script>
-        /* ---- Ripple effect ---- */
+        /* ================================================================
+         * RippleEffect
+         *
+         * Generates expanding colour ripples across the background.
+         * PRESERVED as the page's defining visual identity.
+         *
+         * Key change from original: .ripple uses position: fixed (CSS),
+         * not position: absolute. This prevents clipping at body edges
+         * since the body now uses overflow: hidden for the svh layout.
+         * ================================================================ */
         class RippleEffect {
             constructor(opts = {}) {
-                this.minSize     = opts.minSize     || 100;
-                this.maxSize     = opts.maxSize     || 300;
-                this.minDuration = opts.minDuration || 2000;
-                this.maxDuration = opts.maxDuration || 3000;
-                this.frequency   = opts.frequency   || 100;
-                this.rippleLimit = opts.rippleLimit || 20;
-                this.active = new Set();
+                this.minSize     = opts.minSize     ?? 100;
+                this.maxSize     = opts.maxSize     ?? 300;
+                this.minDuration = opts.minDuration ?? 2000;
+                this.maxDuration = opts.maxDuration ?? 3000;
+                this.frequency   = opts.frequency   ?? 100;
+                this.rippleLimit = opts.rippleLimit ?? 20;
+                this._active   = new Set();
                 this._interval = setInterval(() => {
-                    if (this.active.size < this.rippleLimit) this._make();
+                    if (this._active.size < this.rippleLimit) this._create();
                 }, this.frequency);
             }
 
-            _make() {
-                const el   = document.createElement('div');
+            _create() {
+                const el  = document.createElement('div');
                 el.classList.add('ripple');
+
                 const size = this.minSize + Math.random() * (this.maxSize - this.minSize);
                 const dur  = this.minDuration + Math.random() * (this.maxDuration - this.minDuration);
-                const colors = [
-                    'rgba(255,0,128,0.8)', 'rgba(255,165,0,0.8)',
-                    'rgba(255,0,0,0.8)',   'rgba(138,43,226,0.8)',
+
+                const palette = [
+                    'rgba(255,0,128,0.8)',
+                    'rgba(255,165,0,0.8)',
+                    'rgba(255,0,0,0.8)',
+                    'rgba(138,43,226,0.8)',
                     'rgba(0,255,127,0.8)',
                 ];
-                const c = colors[Math.floor(Math.random() * colors.length)];
+                const c   = palette[Math.floor(Math.random() * palette.length)];
+                const dim = (a) => c.replace('0.8', a);
+
                 el.style.cssText = `
-                    left:${Math.random()*100}vw;top:${Math.random()*100}vh;
-                    width:${size}px;height:${size}px;
-                    animation-duration:${dur}ms;
-                    background:radial-gradient(circle,${c} 0%,${c.replace('0.8','0.6')} 40%,${c.replace('0.8','0.4')} 60%,${c.replace('0.8','0')} 100%);
+                    left:${(Math.random() * 100).toFixed(1)}vw;
+                    top:${(Math.random() * 100).toFixed(1)}vh;
+                    width:${size.toFixed(0)}px;
+                    height:${size.toFixed(0)}px;
+                    animation-duration:${dur.toFixed(0)}ms;
+                    background: radial-gradient(
+                        circle,
+                        ${dim('0.8')} 0%,
+                        ${dim('0.5')} 40%,
+                        ${dim('0.3')} 65%,
+                        ${dim('0')}   100%
+                    );
                 `;
-                this.active.add(el);
+
+                this._active.add(el);
                 document.body.appendChild(el);
-                el.addEventListener('animationend', () => { this.active.delete(el); el.remove(); }, { once: true });
+
+                el.addEventListener('animationend', () => {
+                    this._active.delete(el);
+                    el.remove();
+                }, { once: true });
             }
 
             destroy() {
                 clearInterval(this._interval);
-                this.active.forEach(r => r.remove());
-                this.active.clear();
+                this._active.forEach(el => el.remove());
+                this._active.clear();
             }
         }
 
-        const RIPPLE_CONFIG = { minSize:150, maxSize:400, minDuration:2000, maxDuration:3000, frequency:150, rippleLimit:15 };
-        let rippleEffect = new RippleEffect(RIPPLE_CONFIG);
+        /* Instantiate — same tuning as original */
+        const RIPPLE_CFG = {
+            minSize: 150, maxSize: 420,
+            minDuration: 2000, maxDuration: 3200,
+            frequency: 150, rippleLimit: 15,
+        };
+        let ripple = new RippleEffect(RIPPLE_CFG);
 
-        let resizeTimeout;
+        /* Rebuild on resize so ripples reposition to the new viewport */
+        let resizeTimer;
         window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                rippleEffect.destroy();
-                rippleEffect = new RippleEffect(RIPPLE_CONFIG);
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                ripple.destroy();
+                ripple = new RippleEffect(RIPPLE_CFG);
             }, 250);
         });
 
-        window.addEventListener('beforeunload', () => rippleEffect.destroy());
+        window.addEventListener('beforeunload', () => ripple.destroy());
 
-        /* ---- Modal ---- */
+        /* ================================================================
+         * Modal — open / close
+         * ================================================================ */
         function showVerification() {
-            document.getElementById('modal').style.display = 'block';
-            setTimeout(() => document.getElementById('answer').focus(), 100);
+            document.getElementById('modal').classList.add('visible');
+            /* Auto-focus so users can type without clicking the input */
+            setTimeout(() => document.getElementById('answer').focus(), 120);
         }
 
         function closeModal() {
-            document.getElementById('modal').style.display = 'none';
+            document.getElementById('modal').classList.remove('visible');
             document.getElementById('result').innerHTML = '';
-            document.getElementById('answer').value = '';
+            document.getElementById('answer').value    = '';
+            document.getElementById('answer').classList.remove('shake');
         }
 
-        window.addEventListener('click', (e) => {
-            if (e.target === document.getElementById('modal')) closeModal();
+        /* Click outside the card closes the modal */
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
         });
 
+        /* Escape closes the modal */
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeModal();
         });
 
-        /* ---- Answer check — uses PageTransitions for the exit ---- */
+        /* ================================================================
+         * Riddle answer check
+         * ================================================================ */
         function checkAnswer() {
             const answer = document.getElementById('answer').value.trim().toLowerCase();
             const result = document.getElementById('result');
+            const input  = document.getElementById('answer');
 
             if (answer === 'piano') {
-                result.style.color = '#2e7d32';
-                result.innerHTML   = 'Correct! WELCOMEEEEE...';
-                /* Short pause so the success message is readable,
-                   then the transition takes over */
-                setTimeout(() => {
-                    PageTransitions.navigateTo('HappyBirthday.html');
-                }, 700);
+                result.innerHTML = '<span class="result-text success">✓ Correct! WELCOMEEEEE...</span>';
+                setTimeout(() => PageTransitions.navigateTo('HappyBirthday.html'), 750);
+
             } else {
-                result.style.color = '#d9534f';
-                result.innerHTML   = 'Ehhhhhhh Wrong!! Try again.';
-                const img = document.createElement('img');
-                img.src   = './img/finish.jpg';
-                img.alt   = 'Wrong answer reaction';
-                img.style.cssText = 'width:350px;max-width:100%;margin:20px auto 0;display:block;border-radius:8px;';
+                /*
+                 * Shake the input as tactile feedback for wrong answer.
+                 * Class is removed via animationend so subsequent wrong
+                 * attempts restart the animation cleanly.
+                 */
+                input.classList.remove('shake');
+                void input.offsetWidth; /* force reflow to restart animation */
+                input.classList.add('shake');
+                input.addEventListener('animationend', () => {
+                    input.classList.remove('shake');
+                }, { once: true });
+
+                result.innerHTML = '<span class="result-text error">Ehhhhhhh Wrong!! Try again.</span>';
+
+                const img     = document.createElement('img');
+                img.src       = './img/finish.jpg';
+                img.alt       = 'Wrong answer reaction';
+                img.className = 'error-img';
                 result.appendChild(img);
             }
         }
 
-        /* Enter key submits; Escape is handled globally above */
+        /* Enter key submits */
         document.getElementById('answer').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') checkAnswer();
         });

@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAPPY BIRTHDAYY!!!!!</title>
-    <link rel="icon" href="./img/icon.jpg"/>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0d0d0d">
+    <title>Happy Birthday! 🎂</title>
+    <link rel="icon" href="./img/icon.jpg">
+
+    <!-- Font performance: preconnect reduces handshake time; display=swap prevents FOIT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <script src="./transitions.js"></script>
     <style>
         /*
@@ -268,6 +274,141 @@
             .flashcard, .flashcard-container { transition: none; }
             .square, .balloon { animation: none; }
             .content::before  { animation: none; }
+            .ending-emoji     { animation: none; }
+            .ending-overlay   { transition: none; }
+        }
+
+        /* ============================================================
+         * Confetti — used on the ending screen celebration
+         * ============================================================ */
+        #confetti-layer {
+            position: fixed; inset: 0;
+            pointer-events: none;
+            /* z-index above the ending overlay so confetti falls over text */
+            z-index: 60;
+        }
+
+        .confetti {
+            position: fixed;
+            transform-origin: top center;
+            border-radius: 2px;
+            animation: confettiFall infinite;
+        }
+
+        @keyframes confettiFall {
+            0%   { transform: translateY(-100vh) rotate(var(--rotation)); opacity: 0; }
+            8%   { opacity: 1; }
+            92%  { opacity: 1; }
+            100% { transform: translateY(100vh)  rotate(var(--rotation)); opacity: 0; }
+        }
+
+        /* ============================================================
+         * Ending overlay
+         *
+         * Sits above the flashcard but below the confetti layer.
+         * Uses opacity transition for a cinematic fade-in.
+         * backdrop-filter blurs the birthday page background, keeping
+         * the coloured squares and balloons softly visible — this
+         * maintains atmosphere while focusing on the finale.
+         * ============================================================ */
+        .ending-overlay {
+            position: fixed; inset: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(1rem, 4vw, 2rem);
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.7s ease;
+        }
+
+        .ending-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ending-content {
+            text-align: center;
+            max-width: 520px;
+            /* Slides up as the overlay fades in */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.3s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+        }
+
+        /* The transition-delay means content animates in AFTER the overlay is visible */
+        .ending-overlay.visible .ending-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .ending-emoji {
+            font-size: clamp(3rem, 10vw, 5rem);
+            line-height: 1;
+            display: block;
+            margin-bottom: clamp(1rem, 3vh, 1.5rem);
+            animation: emojiEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both;
+        }
+
+        @keyframes emojiEntrance {
+            from { transform: scale(0) rotate(-20deg); opacity: 0; }
+            to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+        }
+
+        .ending-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            color: white;
+            margin: 0 0 clamp(0.75rem, 2vh, 1.25rem);
+            text-shadow: 0 2px 16px rgba(0,0,0,0.3);
+        }
+
+        .ending-message {
+            font-size: clamp(0.88rem, 2.2vw, 1.05rem);
+            font-weight: 300;
+            color: rgba(255,255,255,0.82);
+            line-height: 1.8;
+            margin: 0 0 clamp(1.5rem, 4vh, 2.5rem);
+        }
+
+        /* Divider between message and replay button */
+        .ending-divider {
+            width: 60px;
+            height: 1px;
+            background: rgba(255,255,255,0.2);
+            margin: 0 auto clamp(1.25rem, 3vh, 2rem);
+        }
+
+        .ending-replay {
+            padding: 12px 36px;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(0.82rem, 2vw, 0.95rem);
+            font-weight: 400;
+            color: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.28);
+            border-radius: 40px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+        }
+
+        .ending-replay:hover {
+            background: rgba(255,255,255,0.22);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .ending-replay:active  { transform: translateY(0); }
+
+        .ending-replay:focus-visible {
+            outline: 2px solid rgba(255,255,255,0.7);
+            outline-offset: 4px;
         }
     </style>
 </head>
@@ -309,6 +450,26 @@
 
     <p class="nav-hint" aria-hidden="true">← → arrow keys &nbsp;·&nbsp; swipe on mobile</p>
 
+    <!-- Confetti falls over everything (z-index: 60), even the ending overlay -->
+    <div id="confetti-layer" aria-hidden="true"></div>
+
+    <!--
+        Ending overlay — shown after the user reads the last message.
+        position: fixed (z-index 50) covers the whole viewport.
+        Starts invisible (opacity: 0); .visible class triggers fade-in.
+    -->
+    <div class="ending-overlay" id="endingOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="endingTitle">
+        <div class="ending-content">
+            <span class="ending-emoji" aria-hidden="true">🎂</span>
+            <h2 class="ending-title" id="endingTitle">That's everyone!</h2>
+            <p class="ending-message" id="endingMessage"></p>
+            <div class="ending-divider" aria-hidden="true"></div>
+            <button class="ending-replay" onclick="replayCards()">
+                Read Again ↩
+            </button>
+        </div>
+    </div>
+
     <script>
         const birthdayMessages = [
             "Disclaimer: I am impersonating these people and offering my rendition of what I think their wishes would sound like.",
@@ -321,17 +482,38 @@
             "May this year bring you success and happiness! Cheers to another year of amazing adventures!<br>Happy Birthday, Oluwademilade!<br>I wish you all the best things in life."
         ];
 
-        const flashcard    = document.getElementById('flashcard1');
-        const frontContent = document.getElementById('frontContent');
-        const backContent  = document.getElementById('backContent');
-        const cardCounter  = document.getElementById('cardCounter');
+        /* ── Customise the ending message here ────────────────────────────
+         * HTML is supported. This appears on the finale screen after
+         * the user has read through all the birthday messages.
+         * ──────────────────────────────────────────────────────────────── */
+        const ENDING_MESSAGE =
+            `Every word here was written with love — and every wish is genuine.<br><br>
+             Hope this made you smile, because you deserve every bit of joy<br>
+             that today — and every day — brings. 🌟<br><br>
+             Happy Birthday, Demi.`;
+
+        /* ─────────────────────────────────────────────────────────── */
+
+        const flashcard      = document.getElementById('flashcard1');
+        const frontContent   = document.getElementById('frontContent');
+        const backContent    = document.getElementById('backContent');
+        const cardCounter    = document.getElementById('cardCounter');
+        const endingOverlay  = document.getElementById('endingOverlay');
+        const endingMessage  = document.getElementById('endingMessage');
+        const confettiLayer  = document.getElementById('confetti-layer');
 
         let currentCard   = 0;
         let isShowingBack = false;
         let isAnimating   = false;
+        let isEnding      = false; // true while ending screen is visible
+
+        const LAST = birthdayMessages.length - 1;
 
         function updateCounter() {
-            cardCounter.textContent = `${currentCard + 1} / ${birthdayMessages.length}`;
+            const isLast = currentCard === LAST;
+            cardCounter.textContent = isLast
+                ? `${currentCard + 1} / ${birthdayMessages.length} · last one ✨`
+                : `${currentCard + 1} / ${birthdayMessages.length}`;
         }
 
         function showCard() {
@@ -350,16 +532,29 @@
         }
 
         function nextCard() {
+            if (isEnding) return;
+            /*
+             * On the last card, "Next" triggers the finale instead
+             * of looping back to card 1. This gives the experience a
+             * proper ending rather than an abrupt restart.
+             */
+            if (currentCard === LAST) {
+                showEnding();
+                return;
+            }
             currentCard = (currentCard + 1) % birthdayMessages.length;
             showCard();
         }
 
         function prevCard() {
+            if (isEnding) return;
             currentCard = (currentCard - 1 + birthdayMessages.length) % birthdayMessages.length;
             showCard();
         }
 
+        /* Guard: keyboard nav disabled while ending overlay is visible */
         document.addEventListener('keydown', (e) => {
+            if (isEnding) return;
             if      (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextCard();
             else if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prevCard();
         });
@@ -369,7 +564,10 @@
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
         }, { passive: true });
+
+        /* Guard: swipe nav disabled while ending overlay is visible */
         document.addEventListener('touchend', (e) => {
+            if (isEnding) return;
             const dx = touchStartX - e.changedTouches[0].clientX;
             const dy = touchStartY - e.changedTouches[0].clientY;
             if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
@@ -409,6 +607,80 @@
             dec.appendChild(frag);
         }
 
+        /* ============================================================
+         * showEnding()
+         *
+         * Triggered when the user clicks "Next" on the last card.
+         * Fades in the ending overlay, injects the customisable
+         * message, and starts the confetti celebration.
+         * ============================================================ */
+        function showEnding() {
+            isEnding = true;
+            endingMessage.innerHTML = ENDING_MESSAGE;
+            endingOverlay.classList.add('visible');
+            endingOverlay.removeAttribute('aria-hidden');
+            /* Focus the replay button for keyboard accessibility */
+            setTimeout(() => endingOverlay.querySelector('.ending-replay').focus(), 900);
+            /* Confetti starts slightly after overlay fades in */
+            setTimeout(() => generateConfetti(120), 400);
+        }
+
+        /* ============================================================
+         * replayCards()
+         *
+         * Resets the experience to card 1 without a page reload.
+         * Clears the ending overlay, stops confetti, and resets all
+         * card state so the flip animation works correctly from scratch.
+         * ============================================================ */
+        function replayCards() {
+            isEnding = false;
+            endingOverlay.classList.remove('visible');
+            endingOverlay.setAttribute('aria-hidden', 'true');
+
+            /* Clear confetti */
+            confettiLayer.innerHTML = '';
+
+            /* Reset card engine to initial state */
+            currentCard   = 0;
+            isShowingBack = false;
+            isAnimating   = false;
+            flashcard.style.transform = 'rotateY(0deg)';
+            frontContent.innerHTML = birthdayMessages[0];
+            backContent.innerHTML  = birthdayMessages[0];
+            updateCounter();
+        }
+
+        /* ============================================================
+         * generateConfetti(count)
+         *
+         * Spawns infinite-fall confetti for the ending celebration.
+         * DocumentFragment ensures a single DOM operation.
+         * Short delay range (0–0.8s) staggers the cascade visually.
+         * ============================================================ */
+        function generateConfetti(count) {
+            const colors = ['#ff4d4d','#ffff66','#66b3ff','#ff99cc','#99ff99','#c9a94f','#ff9900','#cc66ff'];
+            const frag   = document.createDocumentFragment();
+
+            for (let i = 0; i < count; i++) {
+                const el   = document.createElement('div');
+                el.classList.add('confetti');
+                const size = (Math.random() * 9 + 4).toFixed(1);
+                el.style.cssText = `
+                    background:${colors[Math.floor(Math.random() * colors.length)]};
+                    width:${size}px;
+                    height:${(+size * 2).toFixed(1)}px;
+                    left:${(Math.random() * 100).toFixed(1)}%;
+                    animation-delay:${(Math.random() * 0.8).toFixed(2)}s;
+                    animation-duration:${(Math.random() * 2.5 + 2).toFixed(2)}s;
+                    --rotation:${Math.floor(Math.random() * 360)}deg;
+                `;
+                frag.appendChild(el);
+            }
+
+            confettiLayer.appendChild(frag);
+        }
+
+        /* ─── Initialise ──────────────────────────────────────────── */
         frontContent.innerHTML = birthdayMessages[0];
         backContent.innerHTML  = birthdayMessages[0];
         updateCounter();
