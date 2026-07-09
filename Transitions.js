@@ -27,6 +27,7 @@ const PageTransitions = (function () {
         'index.html':         '#125b77', // envelope — deep blue
         'Welcome.html':       '#125b77', // riddle gate — same deep blue
         'HappyBirthday.html': '#0d0d0d', // birthday — near-black (matches dark bg)
+        'PhotoCollage.html':  '#080808', // gallery — near-black, seamless from birthday page
     };
 
     /* Pages that receive a theatrical curtain reveal on arrival

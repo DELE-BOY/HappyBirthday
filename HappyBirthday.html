@@ -427,8 +427,82 @@
             outline: 2px solid rgba(255,255,255,0.7);
             outline-offset: 4px;
         }
+
+        /* Two-button row: Read Again + View Gallery */
+        .ending-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Gallery button — blue tint distinguishes it from the neutral replay button */
+        .ending-gallery {
+            padding: 12px 32px;
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(0.82rem, 2vw, 0.95rem);
+            font-weight: 400;
+            color: rgba(255,255,255,0.9);
+            background: rgba(135,206,235,0.12);
+            border: 1px solid rgba(135,206,235,0.28);
+            border-radius: 40px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+        }
+
+        .ending-gallery:hover {
+            background: rgba(135,206,235,0.24);
+            border-color: rgba(135,206,235,0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+
+        .ending-gallery:active { transform: translateY(0); }
+
+        .ending-gallery:focus-visible {
+            outline: 2px solid #87CEEB;
+            outline-offset: 4px;
+        }
+
+        /*
+         * Gallery countdown hint — fades in 1.5s after the ending screen appears,
+         * giving the user time to read the message before seeing the auto-nav notice.
+         * A thin progress bar fills over 8s; the timer fires goToGallery() at 0.
+         */
+        .gallery-hint {
+            margin-top: 1.5rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .gallery-hint.visible { opacity: 1; }
+
+        .hint-label {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.5px;
+            margin: 0 0 8px;
+        }
+
+        .countdown-track {
+            width: clamp(100px, 40%, 180px);
+            height: 1.5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 1px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .countdown-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #87CEEB, #ADD8E6);
+            border-radius: 1px;
+            /* transition is set by JS once the countdown starts */
+        }
     </style>
-</head>
 <body>
     <div class="background" aria-hidden="true"></div>
     <div class="decorations" aria-hidden="true"></div>
@@ -478,9 +552,23 @@
             <h2 class="ending-title" id="endingTitle">That's everyone!</h2>
             <p class="ending-message" id="endingMessage"></p>
             <div class="ending-divider" aria-hidden="true"></div>
-            <button class="ending-replay" onclick="replayCards()">
-                Read Again ↩
-            </button>
+
+            <div class="ending-actions">
+                <button class="ending-replay" onclick="replayCards()">Read Again ↩</button>
+                <button class="ending-gallery" onclick="goToGallery()">View Gallery 📸</button>
+            </div>
+
+            <!--
+                Gallery countdown hint — fades in after 1.5s.
+                A thin progress bar fills over 8s then auto-navigates to the gallery.
+                Cancelled immediately if the user clicks either button.
+            -->
+            <div class="gallery-hint" id="galleryHint" aria-hidden="true">
+                <p class="hint-label" id="hintLabel">📸 Gallery opens in 8s</p>
+                <div class="countdown-track" aria-hidden="true">
+                    <div class="countdown-bar" id="countdownBar"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -515,10 +603,11 @@
         const endingMessage  = document.getElementById('endingMessage');
         const confettiLayer  = document.getElementById('confetti-layer');
 
-        let currentCard = 0;
-        let flipAngle   = 0;   /* cumulative rotation angle — drives directional flips */
-        let isAnimating = false;
-        let isEnding    = false;
+        let currentCard    = 0;
+        let flipAngle      = 0;   /* cumulative rotation angle — drives directional flips */
+        let isAnimating    = false;
+        let isEnding       = false;
+        let galleryTimerId = null; /* setInterval handle for the auto-gallery countdown */
 
         const LAST = birthdayMessages.length - 1;
 
@@ -654,6 +743,64 @@
         }
 
         /* ============================================================
+         * Gallery countdown
+         *
+         * startGalleryCountdown() — called 1.5s after the ending screen
+         * appears (giving the user time to read the message). Fades in
+         * the hint, animates the progress bar, and ticks a second counter.
+         * At 0, fires goToGallery() automatically.
+         *
+         * cancelGalleryCountdown() — called by replayCards() or
+         * goToGallery() to cleanly stop the timer mid-countdown.
+         * ============================================================ */
+        function startGalleryCountdown() {
+            const DELAY = 8000; // ms
+            const hint  = document.getElementById('galleryHint');
+            const bar   = document.getElementById('countdownBar');
+            const label = document.getElementById('hintLabel');
+
+            hint.classList.add('visible');
+            hint.removeAttribute('aria-hidden');
+
+            /* Fill the progress bar over the full delay */
+            bar.style.transition = `width ${DELAY}ms linear`;
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                bar.style.width = '100%';
+            }));
+
+            /* Tick the second counter */
+            let secs = Math.ceil(DELAY / 1000);
+            const tick = setInterval(() => {
+                secs--;
+                if (secs <= 0) {
+                    clearInterval(tick);
+                    galleryTimerId = null;
+                    goToGallery();
+                } else {
+                    label.textContent = `📸 Gallery opens in ${secs}s`;
+                }
+            }, 1000);
+
+            galleryTimerId = tick;
+        }
+
+        function cancelGalleryCountdown() {
+            if (galleryTimerId !== null) {
+                clearInterval(galleryTimerId);
+                galleryTimerId = null;
+            }
+            const bar  = document.getElementById('countdownBar');
+            const hint = document.getElementById('galleryHint');
+            if (bar)  { bar.style.transition = 'none'; bar.style.width = '0%'; }
+            if (hint) { hint.classList.remove('visible'); hint.setAttribute('aria-hidden', 'true'); }
+        }
+
+        function goToGallery() {
+            cancelGalleryCountdown();
+            PageTransitions.navigateTo('./PhotoCollage.html');
+        }
+
+        /* ============================================================
          * showEnding()
          *
          * Triggered when the user clicks "Next" on the last card.
@@ -669,6 +816,8 @@
             setTimeout(() => endingOverlay.querySelector('.ending-replay').focus(), 900);
             /* Confetti starts slightly after overlay fades in */
             setTimeout(() => generateConfetti(120), 400);
+            /* Gallery countdown starts after 1.5s — time to read the message */
+            setTimeout(startGalleryCountdown, 1500);
         }
 
         /* ============================================================
@@ -679,6 +828,7 @@
          * card state so the flip animation works correctly from scratch.
          * ============================================================ */
         function replayCards() {
+            cancelGalleryCountdown();
             isEnding = false;
             endingOverlay.classList.remove('visible');
             endingOverlay.setAttribute('aria-hidden', 'true');

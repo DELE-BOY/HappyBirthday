@@ -1,0 +1,359 @@
+/*
+ * gallery.css — PhotoCollage page styles
+ *
+ * Sections:
+ *   1. Design tokens
+ *   2. Base
+ *   3. Page header
+ *   4. Category navigation
+ *   5. Masonry grid
+ *   6. Lightbox
+ *   7. Footer
+ *   8. Responsive
+ *   9. Reduced motion
+ */
+
+/* ── 1. Design tokens ────────────────────────────────────────────── */
+:root {
+    --bg:       #080808;
+    --surface:  #111111;
+    --border:   rgba(255,255,255,0.07);
+    --text:     rgba(255,255,255,0.85);
+    --muted:    rgba(255,255,255,0.38);
+    --accent:   #87CEEB;  /* birthday blue — colour continuity across pages */
+    --col-gap:  5px;
+    --page-x:   clamp(16px, 5vw, 64px);
+}
+
+/* ── 2. Base ─────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Poppins', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+/* ── 3. Page header ──────────────────────────────────────────────── */
+.gallery-header {
+    text-align: center;
+    padding: clamp(52px, 9vh, 88px) var(--page-x) clamp(24px, 4vh, 40px);
+    position: relative;
+}
+
+.back-link {
+    position: absolute;
+    top: clamp(16px, 3vh, 28px);
+    left: var(--page-x);
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: var(--muted);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.5px;
+    transition: color 0.25s ease;
+}
+
+.back-link:hover { color: var(--text); }
+
+.back-link:focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+.header-emoji {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1;
+    display: block;
+    margin-bottom: 14px;
+}
+
+.gallery-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    color: white;
+    margin: 0 0 8px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+.gallery-tagline {
+    font-size: clamp(0.75rem, 1.8vw, 0.88rem);
+    font-weight: 300;
+    color: var(--muted);
+    margin: 0;
+    letter-spacing: 1.5px;
+}
+
+/* ── 4. Category navigation ──────────────────────────────────────── */
+.category-nav {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0 var(--page-x) clamp(24px, 5vh, 44px);
+}
+
+.cat-pill {
+    padding: 7px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: color 0.25s, background 0.25s, border-color 0.25s;
+}
+
+.cat-pill:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.cat-pill.active {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+    font-weight: 600;
+}
+
+.cat-pill:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* ── 5. Masonry grid ─────────────────────────────────────────────── */
+/*
+ * CSS columns chosen over JS masonry for zero overhead and native browser
+ * handling. `overflow: hidden` on each .masonry-item contains the hover
+ * scale transform, preventing it from overflowing the column.
+ */
+.gallery-main {
+    padding: 0 var(--page-x) clamp(40px, 8vh, 80px);
+}
+
+.masonry-grid {
+    columns: 4 220px;
+    gap: var(--col-gap);
+}
+
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: var(--col-gap);
+    border-radius: 4px;
+    overflow: hidden;  /* clips the scale hover — the reference code was missing this */
+    cursor: pointer;
+    opacity: 0;
+    animation: itemReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes itemReveal {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.masonry-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    /*
+     * Greyscale-to-colour reveal: the signature effect from the reference.
+     * Images sit dormant in greyscale and bloom into colour on hover,
+     * reinforcing the "memories coming to life" feeling of a personal gallery.
+     */
+    filter: grayscale(1) brightness(0.72);
+    transform: scale(1);
+    transition:
+        filter    0.55s ease,
+        transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.masonry-item:hover .masonry-img,
+.masonry-item:focus-visible .masonry-img {
+    filter: grayscale(0) brightness(1.02);
+    transform: scale(1.06);
+}
+
+.masonry-item:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    letter-spacing: 0.5px;
+}
+
+/* ── 6. Lightbox ─────────────────────────────────────────────────── */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.96);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lb-close {
+    position: absolute;
+    top: 20px; right: 24px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.65);
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+    z-index: 2;
+}
+
+.lb-close:hover { background: rgba(255,255,255,0.18); color: white; }
+
+.lb-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.6);
+    font-size: 1.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+    z-index: 2;
+    user-select: none;
+}
+
+.lb-arrow:hover { background: rgba(255,255,255,0.16); color: white; }
+
+.lb-prev { left:  clamp(8px, 2vw, 24px); }
+.lb-next { right: clamp(8px, 2vw, 24px); }
+
+.lb-arrow:focus-visible,
+.lb-close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.lb-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: min(90vw, 920px);
+    padding: 0 clamp(56px, 8vw, 80px); /* clearance for the arrows */
+}
+
+.lb-img {
+    max-width: 100%;
+    max-height: 70vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 6px;
+    display: block;
+    transition: opacity 0.2s ease;
+    background: rgba(255,255,255,0.03); /* subtle placeholder while loading */
+    min-height: 80px;
+}
+
+.lb-info {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.lb-caption {
+    font-size: 0.84rem;
+    font-weight: 300;
+    color: var(--text);
+    margin: 0 0 6px;
+    max-width: 60ch;
+}
+
+.lb-counter {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin: 0;
+    letter-spacing: 1.5px;
+}
+
+/* ── 7. Footer ───────────────────────────────────────────────────── */
+.gallery-footer {
+    text-align: center;
+    padding: clamp(24px, 5vh, 48px) var(--page-x) clamp(32px, 6vh, 60px);
+    border-top: 1px solid var(--border);
+}
+
+.back-to-msgs {
+    padding: 12px 32px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    font-weight: 400;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: color 0.25s, border-color 0.25s, background 0.25s;
+}
+
+.back-to-msgs:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.04);
+}
+
+.back-to-msgs:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+}
+
+.footer-note {
+    margin: 16px 0 0;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+}
+
+/* ── 8. Responsive ───────────────────────────────────────────────── */
+@media (max-width: 900px) { .masonry-grid { columns: 3 180px; } }
+@media (max-width: 600px) { .masonry-grid { columns: 2 140px; } }
+@media (max-width: 360px) { .masonry-grid { columns: 1; } }
+
+/* ── 9. Reduced motion ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .masonry-item { animation: none; opacity: 1; }
+    .masonry-img  { transition: none; }
+    .lightbox     { transition: none; }
+    .lb-img       { transition: none; }
+}
