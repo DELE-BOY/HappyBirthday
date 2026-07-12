@@ -34,7 +34,7 @@ const PageTransitions = (function () {
      * instead of the standard flat-overlay fade. */
     const CURTAIN_PAGES = new Set(['HappyBirthday.html']);
 
-    const FADE_DURATION    = 520;  // ms — flat overlay fade
+    const FADE_DURATION    = 360;  // ms — flat overlay fade
     const CURTAIN_DURATION = 1500; // ms — curtain slide (slow, theatrical)
     const CURTAIN_DELAY    = 500;  // ms — held-breath pause before curtains open
     /*
@@ -57,7 +57,7 @@ const PageTransitions = (function () {
      * Builds the full-viewport colour overlay and appends it to <body>.
      * Starts fully opaque. Caller decides when/how it fades.
      */
-    function buildOverlay(color) {
+function buildOverlay(color) {
         const el = document.createElement('div');
         el.id = 'pt-overlay';
         el.setAttribute('aria-hidden', 'true');
@@ -69,7 +69,28 @@ const PageTransitions = (function () {
             opacity:       '1',
             pointerEvents: 'none',
             transition:    `opacity ${FADE_DURATION}ms ease`,
+            display:       'flex',
+            alignItems:    'center',
+            justifyContent:'center',
         });
+
+        /*
+         * Connecting motif — a small centred 💌 that rides the overlay's
+         * own opacity (no separate animation needed: as a child with no
+         * opacity of its own, it visually fades in/out in lockstep with
+         * its parent). Ties the index.html envelope and Welcome.html
+         * envelope together during the color-fade moment, instead of
+         * leaving a blank colour with nothing happening.
+         */
+        const motif = document.createElement('span');
+        motif.textContent = '💌';
+        motif.setAttribute('aria-hidden', 'true');
+        Object.assign(motif.style, {
+            fontSize:  'clamp(28px, 6vw, 52px)',
+            filter:    'drop-shadow(0 4px 12px rgba(0,0,0,0.25))',
+        });
+        el.appendChild(motif);
+
         document.body.appendChild(el);
         return el;
     }

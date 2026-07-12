@@ -6,6 +6,22 @@
     <meta name="theme-color" content="#125b77">
     <title>Welcome to the Seal</title>
 
+    <!--
+        Open Graph / Social sharing — inner pages generally aren't shared
+        directly (index.html is the entry point people share), but tags
+        are included for consistency and in case someone bookmarks or
+        forwards this specific page.
+        Replace YOUR_USERNAME / YOUR_REPO / YOUR_PREVIEW before sending.
+    -->
+    <meta property="og:type"        content="website">
+    <meta property="og:url"         content="https://YOUR_USERNAME.github.io/YOUR_REPO/Welcome.html">
+    <meta property="og:title"       content="Prove Your Identity 🔑">
+    <meta property="og:description" content="A special birthday experience made just for you.">
+    <meta property="og:image"       content="https://YOUR_USERNAME.github.io/YOUR_REPO/img/YOUR_PREVIEW.jpg">
+    <meta name="twitter:card"       content="summary_large_image">
+    <meta name="twitter:title"      content="Prove Your Identity 🔑">
+    <meta name="twitter:image"      content="https://YOUR_USERNAME.github.io/YOUR_REPO/img/YOUR_PREVIEW.jpg">
+
     <link rel="icon" href="data:,">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,9 +32,13 @@
 
     <style>
         :root {
-            --blue-deep:  #125b77;
-            --blue-mid:   #1a7396;
-            --blue-light: #6fa8dc;
+            --blue-deep:   #125b77;
+            --blue-mid:    #1a7396;
+            --blue-light:  #6fa8dc;
+            --cream:       #FEFCF8;
+            --cream-warm:  #F0E8D5;
+            --flap-color:  #E8E0CC;
+            --fold-top:    #F5EFE2;
         }
 
         *, *::before, *::after { box-sizing: border-box; }
@@ -30,28 +50,25 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: clamp(0.75rem, 2.5vh, 1.5rem);
+            gap: clamp(0.4rem, 1.5svh, 1rem);
             height: 100vh;
             height: 100svh;
             overflow: hidden;
-            padding: clamp(14px, 4vw, 32px);
+            padding: clamp(10px, 3vw, 28px);
             background: linear-gradient(145deg, var(--blue-deep) 0%, var(--blue-mid) 55%, var(--blue-light) 100%);
             color: white;
         }
 
         /* ============================================================
-         * Page wrapper — the single element that carries the entrance
-         * animation. Fades + slides up as transitions.js overlay fades.
-         * Starting at 0.25s means content emerges from the blue — a
-         * deliberate "blue bloom" effect as the overlay recedes.
+         * Page wrapper — fades + slides up as transitions.js overlay
+         * recedes, matching the entrance treatment on every other page.
          * ============================================================ */
         .page-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: clamp(0.75rem, 2.5vh, 1.5rem);
+            gap: clamp(0.4rem, 1.5svh, 0.9rem);
             width: 100%;
-            max-width: 580px;
             opacity: 0;
             transform: translateY(14px);
             animation: pageReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
@@ -61,185 +78,233 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ============================================================
-         * Heading
-         * ============================================================ */
         .page-title {
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-size: clamp(1.3rem, 4vw, 2rem);
             color: white;
             margin: 0;
             text-align: center;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.18);
+            text-shadow: 0 2px 16px rgba(0,0,0,0.18);
+            flex-shrink: 0;
         }
 
         /* ============================================================
-         * Ornamental divider — a horizontal rule with centred icon.
-         * Ties back to the 💌 seal on the envelope page.
+         * Envelope scene
+         * perspective creates the 3D depth context for the flap's
+         * rotateX. Sized to leave headroom for the peeking letter card
+         * to rise above the envelope body.
          * ============================================================ */
-        .seal-divider {
+        .envelope-scene {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 14px;
+            perspective: 1400px;
+            perspective-origin: 50% 30%;
             width: 100%;
-        }
-
-        .seal-divider::before,
-        .seal-divider::after {
-            content: '';
             flex: 1;
-            height: 1px;
-            background: rgba(255,255,255,0.2);
-        }
-
-        .seal-divider span {
-            font-size: 1.05rem;
-            opacity: 0.65;
-            line-height: 1;
+            min-height: 0; /* allows flex children to shrink properly */
+            justify-content: flex-end; /* anchors envelope toward the bottom, letter rises up into free space */
         }
 
         /* ============================================================
-         * Epistle — styled as a frosted-glass letter card
-         * ============================================================ */
-        .epistle {
-            width: 100%;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.18);
-            border-radius: 16px;
-            padding: clamp(14px, 3vh, 22px) clamp(18px, 4vw, 28px);
-            font-size: clamp(0.78rem, 1.8vw, 0.9rem);
-            line-height: 1.85;
-            color: rgba(255,255,255,0.9);
-            text-align: center;
-        }
-
-        .epistle p { margin: 0; }
-
-        /* ============================================================
-         * Next button — glassmorphic, matching index.html's open button
-         * ============================================================ */
-        .btn-next {
-            padding: 13px 40px;
-            font-family: 'Poppins', sans-serif;
-            font-size: clamp(0.82rem, 2vw, 0.95rem);
-            font-weight: 400;
-            color: rgba(255,255,255,0.92);
-            background: rgba(255,255,255,0.14);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 40px;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-            transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.25s;
-        }
-
-        .btn-next:hover {
-            background: rgba(255,255,255,0.24);
-            border-color: rgba(255,255,255,0.5);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.16);
-        }
-
-        .btn-next:active { transform: translateY(0); }
-
-        .btn-next:focus-visible {
-            outline: 2px solid rgba(255,255,255,0.75);
-            outline-offset: 4px;
-        }
-
-        /* ============================================================
-         * Modal
+         * Envelope — supersized, tilted, frozen half-open.
          *
-         * display: flex (via .visible class) so the card can be centred
-         * with align-items / justify-content rather than margin tricks.
-         *
-         * Backdrop: semi-transparent black + blur. The blur softens the
-         * ripple effect in the background, keeping focus on the riddle.
+         * Unlike index.html's envelope (click-to-open), this one never
+         * fully closes or fully opens on its own — it rests permanently
+         * ajar, with a slow breathing sway, until the riddle is solved.
          * ============================================================ */
-        #modal {
-            display: none;
-            position: fixed;
+        .envelope {
+            position: relative;
+            width: min(560px, 88vw);
+            height: calc(min(560px, 88vw) * 0.6);
+            transform-style: preserve-3d;
+            transform: rotate(-1.5deg);
+            animation: envSway 5s ease-in-out infinite;
+            flex-shrink: 0;
+            margin-bottom: clamp(8px, 2svh, 16px);
+        }
+
+        @keyframes envSway {
+            0%, 100% { transform: rotate(-1.5deg) translateY(0); }
+            50%       { transform: rotate(1deg)   translateY(-6px); }
+        }
+
+        /* Envelope stops swaying once the riddle is solved and it
+         * begins its final opening motion. */
+        .envelope.opening { animation-play-state: paused; }
+
+        .env-body {
+            position: absolute;
             inset: 0;
-            z-index: 1000;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        #modal.visible { display: flex; }
-
-        .modal-card {
-            background: rgba(255,255,255,0.98);
-            border-radius: 20px;
-            padding: clamp(22px, 5vw, 38px);
-            width: 100%;
-            max-width: 460px;
+            background: linear-gradient(160deg, var(--cream) 0%, #F6EFE1 55%, var(--cream-warm) 100%);
+            border-radius: 2px 2px 10px 10px;
+            overflow: hidden;
             box-shadow:
-                0 24px 64px rgba(0,0,0,0.32),
-                0 8px 20px  rgba(0,0,0,0.16);
-            animation: modalIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            text-align: center;
-            color: #333;
+                0 4px 6px   rgba(0,0,0,0.08),
+                0 12px 24px rgba(0,0,0,0.16),
+                0 32px 64px rgba(0,0,0,0.24);
+            z-index: 2;
         }
 
-        @keyframes modalIn {
-            from { opacity: 0; transform: translateY(-18px) scale(0.97); }
-            to   { opacity: 1; transform: translateY(0)     scale(1);    }
+        .env-fold          { position: absolute; pointer-events: none; }
+        .env-fold-bottom    { inset: 0; background: linear-gradient(to top, rgba(110,85,55,0.09), transparent); clip-path: polygon(0 100%, 100% 100%, 50% 0%); }
+        .env-fold-left      { inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.055), transparent); clip-path: polygon(0 0, 50% 50%, 0 100%); }
+        .env-fold-right     { inset: 0; background: linear-gradient(to left, rgba(0,0,0,0.055), transparent);  clip-path: polygon(100% 0, 50% 50%, 100% 100%); }
+
+        /* ============================================================
+         * Flap — frozen at rest around -78deg (well short of the 90deg
+         * backface-flip point), so its cream front face stays visible
+         * the whole time. Idle breathing oscillates gently around that
+         * resting angle. On success, .opening overrides both and
+         * finishes the rotation to -192deg (matching index.html's
+         * fully-open angle), vanishing past backface-visibility.
+         * ============================================================ */
+        .env-flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 54%;
+            background: linear-gradient(172deg, var(--fold-top) 0%, var(--flap-color) 100%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top center;
+            backface-visibility: hidden;
+            z-index: 1; /* BEHIND the body/letter — raised flap acts as a backdrop */
+            animation: flapBreathe 4.5s ease-in-out infinite;
         }
 
-        .modal-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            color: var(--blue-deep);
-            margin: 0 0 4px;
+        @keyframes flapBreathe {
+            0%, 100% { transform: rotateX(-74deg); }
+            50%       { transform: rotateX(-84deg); }
         }
 
-        .modal-subtitle {
-            font-size: 0.76rem;
-            color: #999;
-            margin: 0 0 16px;
-            letter-spacing: 0.5px;
+        .envelope.opening .env-flap {
+            animation: none;
+            transform: rotateX(-192deg);
+            transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         /* ============================================================
-         * Riddle — styled as a mysterious inscription: uppercase,
-         * spaced letters, blue-tinted background, left accent border.
-         * The visual treatment reinforces the riddle's ceremonial feel.
+         * Wax seal — decorative accent on the body, pulses gently.
+         * Disappears once the envelope starts its final opening.
          * ============================================================ */
+        .env-seal {
+            position: absolute;
+            top: 28%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(34px, 6vw, 46px);
+            height: clamp(34px, 6vw, 46px);
+            background: radial-gradient(circle at 33% 33%, #f5d27a 0%, #c8941a 45%, #9a6b00 100%);
+            border-radius: 50%;
+            box-shadow:
+                0 2px 8px  rgba(0,0,0,0.3),
+                0 0 0 3px  rgba(200,148,26,0.2),
+                inset 0 1px 3px rgba(255,255,255,0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(14px, 2.4vw, 18px);
+            z-index: 3;
+            animation: sealPulse 2.8s ease-in-out infinite;
+            transition: transform 0.3s ease, opacity 0.25s ease;
+        }
+
+        @keyframes sealPulse {
+            0%, 100% { box-shadow: 0 2px 8px rgba(0,0,0,0.3), 0 0 0 3px rgba(200,148,26,0.2), inset 0 1px 3px rgba(255,255,255,0.3); }
+            50%       { box-shadow: 0 2px 8px rgba(0,0,0,0.3), 0 0 0 7px rgba(200,148,26,0.06), 0 0 24px rgba(200,148,26,0.32), inset 0 1px 3px rgba(255,255,255,0.3); }
+        }
+
+        .envelope.opening .env-seal {
+            animation: none;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+        }
+
+        /* ============================================================
+         * Letter card — peeks up out of the gap created by the raised
+         * flap. Bottom edge is tucked behind .env-body (lower z-index);
+         * the rest of the card rises freely above the envelope, which
+         * is what makes the "peeking out" illusion work with pure
+         * document order rather than clip-path trickery.
+         *
+         * This card also serves as the riddle gate itself — no modal.
+         * ============================================================ */
+        .env-letter {
+            position: absolute;
+            bottom: 16%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(430px, 86vw);
+            max-height: min(56svh, 460px);
+            overflow-y: auto;
+            background: rgba(255,255,255,0.98);
+            border-radius: 16px;
+            padding: clamp(16px, 3.5vw, 26px) clamp(18px, 4vw, 26px);
+            box-shadow:
+                0 12px 28px rgba(0,0,0,0.22),
+                0 3px 8px   rgba(0,0,0,0.12);
+            color: #333;
+            text-align: center;
+            z-index: 4; /* above body and flap */
+            transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .envelope.opening .env-letter {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-24px);
+        }
+
+        .letter-heading {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.2rem, 3.2vw, 1.6rem);
+            color: var(--blue-deep);
+            margin: 0 0 8px;
+        }
+
+        .letter-epistle {
+            font-size: clamp(0.72rem, 1.7vw, 0.82rem);
+            line-height: 1.7;
+            color: #555;
+            margin: 0 0 14px;
+        }
+
+        .letter-divider {
+            width: 44px;
+            height: 1px;
+            background: rgba(18,91,119,0.2);
+            margin: 0 auto 14px;
+        }
+
+        /* Riddle — carried over from the modal version; the blue-tinted
+         * inscription treatment reads well on this card's white background. */
         .riddle-text {
             background: linear-gradient(135deg, #e8f4fd, #d4eaf7);
             border-left: 3px solid var(--blue-deep);
             border-radius: 0 10px 10px 0;
-            padding: 14px 18px;
-            font-size: clamp(0.72rem, 1.6vw, 0.82rem);
+            padding: 12px 16px;
+            font-size: clamp(0.68rem, 1.5vw, 0.78rem);
             font-weight: 600;
             color: var(--blue-deep);
-            letter-spacing: 1.2px;
-            line-height: 1.8;
+            letter-spacing: 1.1px;
+            line-height: 1.75;
             text-transform: uppercase;
             text-align: left;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
-        /* ============================================================
-         * Answer input
-         * ============================================================ */
+        .answer-row {
+            display: flex;
+            gap: 8px;
+        }
+
         #answer {
-            width: 100%;
-            padding: 11px 16px;
+            flex: 1;
+            min-width: 0;
+            padding: 10px 14px;
             font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #333;
             background: white;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             outline: none;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            margin-bottom: 14px;
         }
 
         #answer:focus {
@@ -247,114 +312,106 @@
             box-shadow: 0 0 0 3px rgba(18,91,119,0.12);
         }
 
-        /*
-         * Shake animation — physical feedback on wrong answer.
-         * Class is added via JS and auto-removed via animationend.
-         * No persistent red border: the shake motion alone is clear.
-         */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-7px); }
-            40%, 80% { transform: translateX(7px); }
-        }
-
-        #answer.shake {
-            animation: shake 0.38s cubic-bezier(0.36, 0.07, 0.19, 0.97);
-        }
-
-        /* ============================================================
-         * Modal footer — right-aligned button pair (standard UX pattern:
-         * secondary/cancel left, primary/confirm right)
-         * ============================================================ */
-        .modal-footer {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        .btn {
-            padding: 10px 24px;
+        .btn-submit {
+            padding: 10px 20px;
             font-family: 'Poppins', sans-serif;
-            font-size: 0.86rem;
+            font-size: 0.85rem;
             font-weight: 500;
+            color: white;
+            background: var(--blue-deep);
+            border: none;
             border-radius: 10px;
             cursor: pointer;
-            border: none;
+            white-space: nowrap;
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
         }
 
-        .btn:active { transform: translateY(0) !important; }
-
-        .btn:focus-visible {
-            outline: 2px solid var(--blue-deep);
-            outline-offset: 3px;
-        }
-
-        .btn-ghost {
-            color: #777;
-            background: transparent;
-            border: 1px solid #e0e0e0;
-        }
-
-        .btn-ghost:hover {
-            background: #f5f5f5;
-            border-color: #ccc;
-        }
-
-        .btn-primary {
-            color: white;
-            background: var(--blue-deep);
-        }
-
-        .btn-primary:hover {
+        .btn-submit:hover {
             background: #0e4a61;
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(18,91,119,0.28);
         }
 
-        /* ============================================================
-         * Result area
-         * ============================================================ */
+        .btn-submit:active { transform: translateY(0); }
+
+        .btn-submit:focus-visible {
+            outline: 2px solid var(--blue-deep);
+            outline-offset: 3px;
+        }
+
+        /* Shake feedback on the input itself for a wrong answer */
+        @keyframes inputShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        #answer.shake { animation: inputShake 0.36s cubic-bezier(0.36, 0.07, 0.19, 0.97); }
+
+        /* Envelope-wide shudder — physical feedback layered on top of
+         * the input shake for a wrong answer; makes the whole object
+         * feel like it "flinched". */
+        @keyframes envShudder {
+            0%, 100% { transform: rotate(-1.5deg) translateX(0); }
+            20%, 60% { transform: rotate(-1.5deg) translateX(-5px); }
+            40%, 80% { transform: rotate(-1.5deg) translateX(5px); }
+        }
+
+        .envelope.shudder { animation: envShudder 0.4s ease; }
+
         #result {
-            margin-top: 14px;
-            min-height: 1.4em;
-            font-size: 0.88rem;
+            margin-top: 12px;
+            min-height: 1.2em;
+            font-size: 0.84rem;
         }
 
-        .result-text {
-            display: block;
-            font-weight: 600;
-        }
-
+        .result-text { display: block; font-weight: 600; }
         .result-text.success { color: #2e7d32; }
         .result-text.error   { color: #c62828; }
 
-        /* Error image — smaller, rounded, animated in */
         .error-img {
             display: block;
             width: 100%;
-            max-width: 240px;
-            margin: 12px auto 0;
+            max-width: 200px;
+            margin: 10px auto 0;
             border-radius: 10px;
             animation: imgReveal 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         @keyframes imgReveal {
             from { opacity: 0; transform: scale(0.94); }
-            to   { opacity: 1; transform: scale(1);    }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        .error-img-fallback {
+            margin: 10px auto 0;
+            padding: 10px 14px;
+            font-size: 0.78rem;
+            color: #888;
+            background: #f5f5f5;
+            border-radius: 8px;
+            max-width: 200px;
+            animation: imgReveal 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         /* ============================================================
-         * Ripple effect
-         *
-         * IMPORTANT: position: fixed (not absolute).
-         * The body now uses overflow: hidden for the svh layout.
-         * position: absolute ripples would be clipped at body edges.
-         * position: fixed makes them viewport-relative and immune to
-         * the parent's overflow restriction.
-         *
-         * The animation (rippleExpand) and color logic are preserved
-         * exactly — this is the page's visual identity.
+         * Hint line — small, decorative, ties back to index.html's
+         * "click to open" cue with a variant fitting this page's premise.
+         * ============================================================ */
+        .open-hint {
+            margin: 0;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.7rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+         * Ripple effect — PRESERVED exactly as the page's defining
+         * visual identity. position: fixed keeps ripples immune to the
+         * body's overflow: hidden.
          * ============================================================ */
         .ripple {
             position: fixed;
@@ -367,25 +424,23 @@
         }
 
         @keyframes rippleExpand {
-            0%   { transform: translate(-50%, -50%) scale(0);   opacity: 0.85; }
-            50%  {                                               opacity: 0.6;  }
-            100% { transform: translate(-50%, -50%) scale(1);   opacity: 0;    }
+            0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.85; }
+            50%  { opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
         }
 
         /* ============================================================
          * Responsive
          * ============================================================ */
-        @media (max-height: 520px) {
-            /* Landscape phone: hide the decorative divider to save space */
-            .seal-divider { display: none; }
-            .epistle      { font-size: 0.72rem; line-height: 1.6; padding: 10px 16px; }
+        @media (max-height: 560px) {
+            .page-title { display: none; }
+            .open-hint  { display: none; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .page-wrapper { animation: none; opacity: 1; transform: none; }
+            .page-wrapper, .envelope, .env-flap, .env-seal, .env-letter { animation: none; }
             .ripple       { animation: none; opacity: 0; }
-            .modal-card   { animation: none; }
-            #answer.shake { animation: none; }
+            #answer.shake, .envelope.shudder { animation: none; }
         }
     </style>
 </head>
@@ -393,81 +448,75 @@
 
     <!--
         Ripple divs are appended directly to <body> by RippleEffect.
-        They use position: fixed so they aren't clipped by body's
-        overflow: hidden.
+        position: fixed keeps them immune to the body's overflow: hidden.
     -->
 
-    <!-- Main content — fades + slides up as transitions.js overlay recedes -->
     <div class="page-wrapper">
 
         <h1 class="page-title">Welcome to the Seal</h1>
 
-        <div class="seal-divider" aria-hidden="true">
-            <span>💌</span>
-        </div>
+        <div class="envelope-scene">
+            <div class="envelope" id="envelope">
 
-        <div class="epistle">
-            <p>
-                🥁 Drumroll, please! 🥁<br>
-                <span style="color:rgba(255,255,255,0.72);">Hold onto your party hats, because today is all about YOU! 🌟✨</span><br>
-                Rumor has it that a saxophonist might just pop out of the cake<br class="br-desktop">
-                to serenade you with your favourite tunes. 🎷🎶<br>
-                Get ready to dance like nobody's watching!<br>
-                So grab your party shoes — let's make this birthday one for the books! 🎉🥂
-            </p>
-        </div>
+                <!-- Flap: frozen half-open with idle breathing sway -->
+                <div class="env-flap" aria-hidden="true"></div>
 
-        <button class="btn-next" onclick="showVerification()" aria-label="Proceed to the identity check">
-            Next →
-        </button>
+                <!-- Main envelope body -->
+                <div class="env-body">
+                    <div class="env-fold env-fold-bottom"></div>
+                    <div class="env-fold env-fold-left"></div>
+                    <div class="env-fold env-fold-right"></div>
+                </div>
 
-    </div>
+                <!-- Wax seal accent -->
+                <div class="env-seal" id="envSeal" aria-hidden="true">💌</div>
 
-    <!--
-        Modal — outside .page-wrapper since it's position: fixed and
-        overlays the whole viewport. Shown via .visible class.
-    -->
-    <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="modal-card">
+                <!--
+                    The peeking letter — doubles as the riddle gate.
+                    No modal: this card IS the interaction surface.
+                -->
+                <div class="env-letter" role="form" aria-label="Identity verification">
+                    <h2 class="letter-heading">A Note Before You Enter</h2>
+                    <p class="letter-epistle">
+                        🥁 Drumroll, please! Today is all about YOU! 🌟<br>
+                        Rumor has it a saxophonist might pop out of the cake. 🎷<br>
+                        But first — the seal has one question for you.
+                    </p>
 
-            <h2 class="modal-title" id="modalTitle">Prove Your Identity</h2>
-            <p class="modal-subtitle">Answer the riddle to proceed</p>
+                    <div class="letter-divider" aria-hidden="true"></div>
 
-            <div class="riddle-text" aria-label="The riddle">
-                I have keys, but open no locks.<br>
-                I have a space, but no room.<br>
-                You can enter, but can't go outside.
+                    <div class="riddle-text" aria-label="The riddle">
+                        I have keys, but open no locks.<br>
+                        I have a space, but no room.<br>
+                        You can enter, but can't go outside.
+                    </div>
+
+                    <div class="answer-row">
+                        <input
+                            type="text"
+                            id="answer"
+                            placeholder="What am I?"
+                            aria-label="Your answer to the riddle"
+                            autocomplete="off"
+                            spellcheck="false"
+                        >
+                        <button class="btn-submit" onclick="checkAnswer()">Unlock →</button>
+                    </div>
+
+                    <div id="result" role="alert" aria-live="assertive"></div>
+                </div>
+
             </div>
-
-            <input
-                type="text"
-                id="answer"
-                placeholder="What am I?"
-                aria-label="Your answer to the riddle"
-                autocomplete="off"
-                spellcheck="false"
-            >
-
-            <div class="modal-footer">
-                <button class="btn btn-ghost" onclick="closeModal()">Close</button>
-                <button class="btn btn-primary" onclick="checkAnswer()">Submit</button>
-            </div>
-
-            <div id="result" role="alert" aria-live="assertive"></div>
-
         </div>
+
+        <p class="open-hint" aria-hidden="true">the seal awaits your answer ✨</p>
+
     </div>
 
     <script>
         /* ================================================================
-         * RippleEffect
-         *
-         * Generates expanding colour ripples across the background.
-         * PRESERVED as the page's defining visual identity.
-         *
-         * Key change from original: .ripple uses position: fixed (CSS),
-         * not position: absolute. This prevents clipping at body edges
-         * since the body now uses overflow: hidden for the svh layout.
+         * RippleEffect — PRESERVED unchanged from the previous version.
+         * The page's defining visual identity.
          * ================================================================ */
         class RippleEffect {
             constructor(opts = {}) {
@@ -484,7 +533,7 @@
             }
 
             _create() {
-                const el  = document.createElement('div');
+                const el = document.createElement('div');
                 el.classList.add('ripple');
 
                 const size = this.minSize + Math.random() * (this.maxSize - this.minSize);
@@ -531,7 +580,6 @@
             }
         }
 
-        /* Instantiate — same tuning as original */
         const RIPPLE_CFG = {
             minSize: 150, maxSize: 420,
             minDuration: 2000, maxDuration: 3200,
@@ -539,7 +587,6 @@
         };
         let ripple = new RippleEffect(RIPPLE_CFG);
 
-        /* Rebuild on resize so ripples reposition to the new viewport */
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
@@ -552,54 +599,51 @@
         window.addEventListener('beforeunload', () => ripple.destroy());
 
         /* ================================================================
-         * Modal — open / close
-         * ================================================================ */
-        function showVerification() {
-            document.getElementById('modal').classList.add('visible');
-            /* Auto-focus so users can type without clicking the input */
-            setTimeout(() => document.getElementById('answer').focus(), 120);
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.remove('visible');
-            document.getElementById('result').innerHTML = '';
-            document.getElementById('answer').value    = '';
-            document.getElementById('answer').classList.remove('shake');
-        }
-
-        /* Click outside the card closes the modal */
-        document.getElementById('modal').addEventListener('click', (e) => {
-            if (e.target.id === 'modal') closeModal();
-        });
-
-        /* Escape closes the modal */
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        /* ================================================================
          * Riddle answer check
+         *
+         * No modal in this version — the envelope card IS the gate.
+         * Correct answer: envelope finishes opening (flap completes its
+         * rotation, seal vanishes, letter fades), THEN the page transition
+         * fires — giving the "you finished opening what index.html started"
+         * payoff the whole page is built around.
+         *
+         * Wrong answer: input shakes, envelope shudders, finish.jpg
+         * appears inline in the result area.
          * ================================================================ */
+        const envelope = document.getElementById('envelope');
+
         function checkAnswer() {
             const answer = document.getElementById('answer').value.trim().toLowerCase();
             const result = document.getElementById('result');
             const input  = document.getElementById('answer');
 
             if (answer === 'piano') {
-                result.innerHTML = '<span class="result-text success">✓ Correct! WELCOMEEEEE...</span>';
-                setTimeout(() => PageTransitions.navigateTo('HappyBirthday.html'), 750);
+                result.innerHTML = '<span class="result-text success">✓ Correct! Opening...</span>';
+
+                /* Finish the envelope's opening motion */
+                envelope.classList.add('opening');
+
+                /* Give the flap/letter animation time to read before the
+                 * curtain-style page transition takes over. */
+                setTimeout(() => {
+                    PageTransitions.navigateTo('HappyBirthday.html');
+                }, 950);
 
             } else {
-                /*
-                 * Shake the input as tactile feedback for wrong answer.
-                 * Class is removed via animationend so subsequent wrong
-                 * attempts restart the animation cleanly.
-                 */
+                /* Input shake */
                 input.classList.remove('shake');
                 void input.offsetWidth; /* force reflow to restart animation */
                 input.classList.add('shake');
                 input.addEventListener('animationend', () => {
                     input.classList.remove('shake');
+                }, { once: true });
+
+                /* Whole-envelope shudder */
+                envelope.classList.remove('shudder');
+                void envelope.offsetWidth;
+                envelope.classList.add('shudder');
+                envelope.addEventListener('animationend', () => {
+                    envelope.classList.remove('shudder');
                 }, { once: true });
 
                 result.innerHTML = '<span class="result-text error">Ehhhhhhh Wrong!! Try again.</span>';
@@ -608,6 +652,18 @@
                 img.src       = './img/finish.jpg';
                 img.alt       = 'Wrong answer reaction';
                 img.className = 'error-img';
+                /*
+                 * Native alt-text rendering is inconsistent across preview
+                 * environments (some sandboxes suppress it entirely). On
+                 * failure, swap in a visible text fallback we control directly
+                 * rather than depending on the browser's alt-text behaviour.
+                 */
+                img.onerror = () => {
+                    const fallback = document.createElement('p');
+                    fallback.className = 'error-img-fallback';
+                    fallback.textContent = '📷 Wrong answer reaction';
+                    img.replaceWith(fallback);
+                };
                 result.appendChild(img);
             }
         }

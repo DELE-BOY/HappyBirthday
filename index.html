@@ -7,7 +7,30 @@
     <meta name="description" content="A special birthday experience">
     <title>Happy Birthday</title>
 
-    <link rel="icon" href="./img/iconindex.jpg">
+    <!--
+        Open Graph / Social sharing
+        ─────────────────────────────────────────────────────────────
+        Before sending, replace the two placeholder values below:
+
+        og:url   → your full GitHub Pages URL for this page
+                   e.g. https://username.github.io/repo-name/
+
+        og:image → a full URL to a preview image (1200×630px ideal)
+                   e.g. https://username.github.io/repo-name/img/preview.jpg
+                   WhatsApp, iMessage and Twitter all read this field.
+        ─────────────────────────────────────────────────────────────
+    -->
+    <meta property="og:type"        content="website">
+    <meta property="og:url"         content="https://YOUR_USERNAME.github.io/YOUR_REPO/">
+    <meta property="og:title"       content="Happy Birthday! 🎉">
+    <meta property="og:description" content="A special birthday experience made just for you. Open this.">
+    <meta property="og:image"       content="https://YOUR_USERNAME.github.io/YOUR_REPO/img/YOUR_PREVIEW.jpg">
+    <meta name="twitter:card"       content="summary_large_image">
+    <meta name="twitter:title"      content="Happy Birthday! 🎉">
+    <meta name="twitter:description" content="A special birthday experience made just for you. Open this.">
+    <meta name="twitter:image"      content="https://YOUR_USERNAME.github.io/YOUR_REPO/img/YOUR_PREVIEW.jpg">
+
+    <link rel="icon" href="data:,">
 
     <!--
         Font loading strategy:
@@ -619,7 +642,7 @@
                 <!-- Letter card: hidden inside, springs out when flap opens -->
                 <div class="env-letter" id="envLetter" aria-hidden="true">
                     <span class="letter-emoji">🎉</span>
-                    <span class="letter-text">For You</span>
+                    <span class="letter-text">Welcome</span>
                 </div>
 
                 <!-- Main envelope face with decorative fold pattern -->
