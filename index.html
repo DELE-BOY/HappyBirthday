@@ -47,7 +47,8 @@
         fires before the first paint — this guarantees the overlay is
         built before any content renders, preventing flash-of-content.
     -->
-    <script src="./transitions.js"></script>
+    <script src="./Transitions.js"></script>
+    <script src="./Sounds.js" defer></script>
 
     <style>
         /* ============================================================
@@ -741,6 +742,9 @@
 
             /* Trigger CSS transitions: flap rotates, seal scales to 0 */
             envelope.classList.add('opening');
+
+            /* Paper-rustle sound, timed to the flap lifting */
+            if (window.SoundFX) SoundFX.playRustle();
 
             /*
              * Elevate letter at ~380ms — by then the flap has rotated

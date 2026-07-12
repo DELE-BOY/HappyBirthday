@@ -28,7 +28,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-    <script src="./transitions.js"></script>
+    <script src="./Transitions.js"></script>
+    <script src="./Sounds.js" defer></script>
 
     <style>
         :root {
@@ -620,6 +621,9 @@
             if (answer === 'piano') {
                 result.innerHTML = '<span class="result-text success">✓ Correct! Opening...</span>';
 
+                /* Success chime */
+                if (window.SoundFX) SoundFX.playCorrect();
+
                 /* Finish the envelope's opening motion */
                 envelope.classList.add('opening');
 
@@ -630,6 +634,9 @@
                 }, 950);
 
             } else {
+                /* Error buzz */
+                if (window.SoundFX) SoundFX.playWrong();
+
                 /* Input shake */
                 input.classList.remove('shake');
                 void input.offsetWidth; /* force reflow to restart animation */

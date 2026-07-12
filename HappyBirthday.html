@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0d0d0d">
-    <title>Happy Birthday! 🎂</title>
+    <title>Happy Birthday!</title>
+
+    <!--
+        Open Graph / Social sharing — see index.html for the full
+        explanation. Replace the placeholder URL values before sending.
+    -->
+    <meta property="og:type"        content="website">
+    <meta property="og:url"         content="https://YOUR_USERNAME.github.io/YOUR_REPO/HappyBirthday.html">
+    <meta property="og:title"       content="Happy Birthday!">
+    <meta property="og:description" content="Messages from the heart, just for you.">
+    <meta property="og:image"       content="https://YOUR_USERNAME.github.io/YOUR_REPO/img/YOUR_PREVIEW.jpg">
+    <meta name="twitter:card"       content="summary_large_image">
+    <meta name="twitter:title"      content="Happy Birthday!">
+    <meta name="twitter:image"      content="https://YOUR_USERNAME.github.io/YOUR_REPO/img/YOUR_PREVIEW.jpg">
     <link rel="icon" href="data:,">
 
     <!-- Font performance: preconnect reduces handshake time; display=swap prevents FOIT -->
@@ -12,7 +25,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-    <script src="./transitions.js"></script>
+    <script src="./Transitions.js"></script>
+    <script src="./Sounds.js" defer></script>
     <style>
         /*
          * KEY FIX — viewport overflow on 13-inch / small screens
@@ -637,6 +651,9 @@
         function showCard(dir) {
             if (isAnimating) return;
             isAnimating = true;
+
+            /* Page-turn swoosh — single insertion point covers both directions */
+            if (window.SoundFX) SoundFX.playSwoosh();
 
             const msg          = birthdayMessages[currentCard];
             const frontVisible = ((flipAngle % 360) + 360) % 360 === 0;
