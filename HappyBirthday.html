@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0d0d0d">
-    <title>Happy Birthday!</title>
+    <title>Happy Birthday! 🎂</title>
 
     <!--
         Open Graph / Social sharing — see index.html for the full
@@ -12,11 +12,11 @@
     -->
     <meta property="og:type"        content="website">
     <meta property="og:url"         content="https://YOUR_USERNAME.github.io/YOUR_REPO/HappyBirthday.html">
-    <meta property="og:title"       content="Happy Birthday!">
+    <meta property="og:title"       content="Happy Birthday! 🎂">
     <meta property="og:description" content="Messages from the heart, just for you.">
     <meta property="og:image"       content="https://YOUR_USERNAME.github.io/YOUR_REPO/img/YOUR_PREVIEW.jpg">
     <meta name="twitter:card"       content="summary_large_image">
-    <meta name="twitter:title"      content="Happy Birthday!">
+    <meta name="twitter:title"      content="Happy Birthday! 🎂">
     <meta name="twitter:image"      content="https://YOUR_USERNAME.github.io/YOUR_REPO/img/YOUR_PREVIEW.jpg">
     <link rel="icon" href="data:,">
 
@@ -200,6 +200,28 @@
             background-color: rgba(0, 0, 0, 0.6);
             font-size: clamp(0.72rem, min(1.6vw, 1.9svh), 1rem);
             line-height: 1.6;
+        }
+
+        /*
+         * Author badge — replaces the old inline <span style="color:...">
+         * approach. A small pill label sitting above the message, gold-
+         * tinted to tie back to the wax seal on the envelope pages.
+         * Rendered by renderMessage() in the script below; omitted
+         * entirely for messages with no author (entry.author === '').
+         */
+        .author-badge {
+            display: block;
+            width: fit-content;
+            margin: 0 auto clamp(6px, 1svh, 10px);
+            padding: 3px 12px;
+            font-size: clamp(0.6rem, 1.3vw, 0.72rem);
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #ffe9b3;
+            background: rgba(255, 204, 0, 0.14);
+            border: 1px solid rgba(255, 204, 0, 0.3);
+            border-radius: 20px;
         }
 
         .content::before {
@@ -587,15 +609,33 @@
     </div>
 
     <script>
+        /*
+         * Each entry is { author, message }.
+         * Placeholder names below — replace "Person 1", "Person 2", etc.
+         * with real names whenever ready. The last message has no author
+         * (it never had one), so its badge is simply omitted.
+         */
         const birthdayMessages = [
-            "<span style='color:#ffcc00;'>DELE</span><br>Hiiiii, Happy Happy Birthdayy!<br>I'm not going to get sentimental in public, but I just wanted to say you're the most amazing, helpful, caring, beautiful soul, and I pray that everything you touch prospers and that all your heart's desires are granted. In Jesus' name, Amen.",
-            "<span style='color:#ffcc00;'>MEZIE</span><br>Happy Birthday, Demi! Although we've only had one conversation, I could tell how smart and insightful you are, and I appreciate all the help you gave, even though you don't even know me.<br>I wish you joy, happiness, and all your heart's desires.",
-            "<span style='color:#ffcc00;'>JESSICA</span><br>Happy Birthday, Demilade!<br>I pray you continue to excel in everything you do.<br>From one first-class Babcock student to another:<br>REAL RECOGNIZE REAL!",
-            "<span style='color:#ffcc00;'>CHISOM</span><br>Hiiiiii! Happy Birthdayyy!<br>I know we've never spoken, but I've heard so much about how amazing you are, and I pray your life is filled with love and all the beautiful things you inspire in other people.",
-            "<span style='color:#ffcc00;'>On behalf of my Brother</span><br>Happy Birthday, Oluwademilade!<br>I pray you have the best year yet and continue to shine bright. Amen.",
-            "<span style='color:#ffcc00;'>PETRA</span><br>Happy Birthday, Demiii!<br>Thank you for being such an amazing person and for checking up on and taking care of me.<br>I wish you so many amazing things, and I pray you continue to flourish in all you do. I love you, and thank you for being my friend whom I can depend on.",
-            "May this year bring you success and happiness! Cheers to another year of amazing adventures!<br>Happy Birthday, Oluwademilade!<br>I wish you all the best things in life."
+            { author: 'Person 1', message: "Hiiiii, Happy Happy Birthdayy!<br>I'm not going to get sentimental in public, but I just wanted to say you're the most amazing, helpful, caring, beautiful soul, and I pray that everything you touch prospers and that all your heart's desires are granted. In Jesus' name, Amen." },
+            { author: 'Person 2', message: "Happy Birthday, Demi! Although we've only had one conversation, I could tell how smart and insightful you are, and I appreciate all the help you gave, even though you don't even know me.<br>I wish you joy, happiness, and all your heart's desires." },
+            { author: 'Person 3', message: "Happy Birthday, Demilade!<br>I pray you continue to excel in everything you do.<br>From one first-class Babcock student to another:<br>REAL RECOGNIZE REAL!" },
+            { author: 'Person 4', message: "Hiiiiii! Happy Birthdayyy!<br>I know we've never spoken, but I've heard so much about how amazing you are, and I pray your life is filled with love and all the beautiful things you inspire in other people." },
+            { author: 'Person 5', message: "Happy Birthday, Oluwademilade!<br>I pray you have the best year yet and continue to shine bright. Amen." },
+            { author: 'Person 6', message: "Happy Birthday, Demiii!<br>Thank you for being such an amazing person and for checking up on and taking care of me.<br>I wish you so many amazing things, and I pray you continue to flourish in all you do. I love you, and thank you for being my friend whom I can depend on." },
+            { author: '', message: "May this year bring you success and happiness! Cheers to another year of amazing adventures!<br>Happy Birthday, Oluwademilade!<br>I wish you all the best things in life." },
         ];
+
+        /*
+         * renderMessage(entry) — builds the badge + message HTML for a
+         * single card face. Centralising this means the badge markup
+         * only needs to be written once, not duplicated at every call site.
+         */
+        function renderMessage(entry) {
+            const badge = entry.author
+                ? `<span class="author-badge">${entry.author}</span>`
+                : '';
+            return badge + entry.message;
+        }
 
         /* ── Customise the ending message here ────────────────────────────
          * HTML is supported. This appears on the finale screen after
@@ -655,7 +695,7 @@
             /* Page-turn swoosh — single insertion point covers both directions */
             if (window.SoundFX) SoundFX.playSwoosh();
 
-            const msg          = birthdayMessages[currentCard];
+            const msg          = renderMessage(birthdayMessages[currentCard]);
             const frontVisible = ((flipAngle % 360) + 360) % 360 === 0;
 
             /* Write to the hidden face before rotating */
@@ -858,8 +898,8 @@
             flipAngle   = 0;
             isAnimating = false;
             flashcard.style.transform = 'rotateY(0deg)';
-            frontContent.innerHTML = birthdayMessages[0];
-            backContent.innerHTML  = birthdayMessages[0];
+            frontContent.innerHTML = renderMessage(birthdayMessages[0]);
+            backContent.innerHTML  = renderMessage(birthdayMessages[0]);
             updateCounter();
         }
 
@@ -905,8 +945,8 @@
             cardCounter.appendChild(dot);
         });
 
-        frontContent.innerHTML = birthdayMessages[0];
-        backContent.innerHTML  = birthdayMessages[0];
+        frontContent.innerHTML = renderMessage(birthdayMessages[0]);
+        backContent.innerHTML  = renderMessage(birthdayMessages[0]);
         updateCounter();
         createBackground();
         animateBackground();
