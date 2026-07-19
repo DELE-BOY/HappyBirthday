@@ -1,0 +1,202 @@
+DELE FAIR USE LICENSE (DFUL)
+Version 1.1
+
+Copyright (c) 2026 DELE
+
+All rights reserved except as expressly granted under this License.
+
+By obtaining, accessing, copying, modifying, distributing, or otherwise using
+this Software, you agree to the terms of this License.
+
+-----------------------------------------------------------------------
+1. DEFINITIONS
+-----------------------------------------------------------------------
+
+"Software" means the source code, object code, documentation, examples,
+configuration files, assets, and any accompanying materials distributed as
+part of this project.
+
+"Author" means the copyright holder of the Software.
+
+"Derivative Work" means any modification, adaptation, translation,
+enhancement, extension, or other work based upon all or any substantial
+portion of the Software.
+
+"Commercial Use" means any use intended for commercial advantage or monetary
+compensation, directly or indirectly, including but not limited to selling,
+licensing, hosting, subscription services, consulting deliverables, or use
+within commercial products or services.
+
+-----------------------------------------------------------------------
+2. OWNERSHIP
+-----------------------------------------------------------------------
+
+The Software is protected by copyright and other applicable intellectual
+property laws.
+
+The Author retains all right, title, and interest in and to the Software.
+
+Except for the rights expressly granted by this License, all rights are
+reserved.
+
+No rights shall be implied from this License.
+
+-----------------------------------------------------------------------
+3. LICENSE GRANT
+-----------------------------------------------------------------------
+
+Subject to compliance with this License, you are granted a worldwide,
+non-exclusive, non-transferable, revocable license to:
+
+• Use the Software for personal purposes.
+• Use the Software for educational purposes.
+• Use the Software for academic research.
+• Study how the Software works.
+• Modify the Software.
+• Redistribute original or modified copies for non-commercial purposes only.
+
+-----------------------------------------------------------------------
+4. SOURCE AVAILABILITY
+-----------------------------------------------------------------------
+
+If you distribute the Software or any Derivative Work, you must:
+
+a) distribute the complete corresponding source code;
+
+b) license the Derivative Work exclusively under this License (DFUL);
+
+c) retain this License in its entirety;
+
+d) preserve all copyright notices;
+
+e) clearly document significant modifications made to the Software.
+
+Relicensing under any other license, including but not limited to MIT,
+Apache-2.0, BSD, GPL, LGPL, MPL, AGPL, or any proprietary license, is
+prohibited.
+
+-----------------------------------------------------------------------
+5. COMMERCIAL RESTRICTIONS
+-----------------------------------------------------------------------
+
+Without prior written permission from the Author, you may NOT:
+
+• Sell the Software.
+• Sell any Derivative Work.
+• Charge for copies of the Software.
+• Include the Software within any paid product.
+• Include the Software in commercial software.
+• Use the Software within a commercial SaaS or hosted service.
+• Bundle the Software into products or services for sale.
+• Sublicense the Software.
+• Rent or lease the Software.
+• Use the Software where its primary purpose is commercial gain.
+
+If you require commercial rights, you must obtain a separate commercial
+license from the Author.
+
+-----------------------------------------------------------------------
+6. ATTRIBUTION
+-----------------------------------------------------------------------
+
+All distributions of the Software or Derivative Works must preserve:
+
+• this License;
+• all copyright notices;
+• attribution to the original Author.
+
+Attribution must not imply endorsement.
+
+-----------------------------------------------------------------------
+7. ATTRIBUTION AND MISREPRESENTATION
+-----------------------------------------------------------------------
+
+You may not:
+
+• remove, alter, or obscure copyright notices;
+• remove Author attribution;
+• claim authorship of the original Software;
+• represent the Software or any substantial portion of it as your own
+  original work;
+• falsely imply that the Author endorses or maintains your Derivative Work.
+
+Derivative Works must clearly indicate that they are modified versions.
+
+-----------------------------------------------------------------------
+8. PROJECT IDENTITY
+-----------------------------------------------------------------------
+
+If the Software is distributed with a distinctive project name, logo,
+branding, or visual identity designated by the Author, those identifiers
+may not be used by Derivative Works in a manner that suggests they are the
+official version.
+
+Derivative Works containing material modifications must clearly identify
+themselves as unofficial modifications.
+
+This provision does not prohibit factual attribution to the original
+Software.
+
+-----------------------------------------------------------------------
+9. CONTRIBUTIONS
+-----------------------------------------------------------------------
+
+Unless otherwise agreed in writing, any contribution intentionally submitted
+to the Software is licensed under this License.
+
+The Author may incorporate contributions into future releases.
+
+-----------------------------------------------------------------------
+10. PATENTS
+-----------------------------------------------------------------------
+
+This License does not grant any patent rights, whether express or implied.
+
+-----------------------------------------------------------------------
+11. TERMINATION
+-----------------------------------------------------------------------
+
+Any violation of this License immediately terminates all rights granted under
+it.
+
+Upon termination, you must immediately cease distribution and use of the
+Software except where otherwise required by law.
+
+-----------------------------------------------------------------------
+12. WARRANTY DISCLAIMER
+-----------------------------------------------------------------------
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, TITLE, OR NON-INFRINGEMENT.
+
+-----------------------------------------------------------------------
+13. LIMITATION OF LIABILITY
+-----------------------------------------------------------------------
+
+IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY, WHETHER IN CONTRACT, TORT, OR OTHERWISE, ARISING FROM OR IN
+CONNECTION WITH THE SOFTWARE OR ITS USE.
+
+-----------------------------------------------------------------------
+14. GOVERNING LAW
+-----------------------------------------------------------------------
+
+To the fullest extent permitted by applicable law, this License shall be
+governed by the laws of the Federal Republic of Nigeria, without regard to
+its conflict of laws principles.
+
+-----------------------------------------------------------------------
+15. COMMERCIAL LICENSING
+-----------------------------------------------------------------------
+
+Nothing in this License prevents the Author from offering the Software under
+different terms, including proprietary or commercial licenses.
+
+Commercial licenses may be granted at the sole discretion of the Author.
+
+-----------------------------------------------------------------------
+END OF LICENSE
+-----------------------------------------------------------------------
+
+NOTE: This file is provided as a demo/test license and is not a final legal document.
