@@ -183,8 +183,8 @@ CONNECTION WITH THE SOFTWARE OR ITS USE.
 -----------------------------------------------------------------------
 
 To the fullest extent permitted by applicable law, this License shall be
-governed by the laws of the Federal Republic of Nigeria, without regard to
-its conflict of laws principles.
+governed by applicable law worldwide, without regard to its conflict of laws
+principles.
 
 -----------------------------------------------------------------------
 15. COMMERCIAL LICENSING
