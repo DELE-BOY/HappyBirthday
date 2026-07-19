@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0d0d0d">
-    <title>Happy Birthday! 🎂</title>
+    <title>Happy Birthday!</title>
 
     <!--
         Open Graph / Social sharing — see index.html for the full
-        explanation. Replace the placeholder URL values before sending.
+        explanation. Replace the placeholder preview image URL before sending.
     -->
     <meta property="og:type"        content="website">
-    <meta property="og:url"         content="https://YOUR_USERNAME.github.io/YOUR_REPO/HappyBirthday.html">
-    <meta property="og:title"       content="Happy Birthday! 🎂">
+    <meta property="og:url"         content="https://DELE-BOY.github.io/HappyBirthday/HappyBirthday.html">
+    <meta property="og:title"       content="Happy Birthday!">
     <meta property="og:description" content="Messages from the heart, just for you.">
-    <meta property="og:image"       content="https://YOUR_USERNAME.github.io/YOUR_REPO/img/YOUR_PREVIEW.jpg">
+    <meta property="og:image"       content="https://DELE-BOY.github.io/HappyBirthday/img/YOUR_PREVIEW.jpg">
     <meta name="twitter:card"       content="summary_large_image">
-    <meta name="twitter:title"      content="Happy Birthday! 🎂">
-    <meta name="twitter:image"      content="https://YOUR_USERNAME.github.io/YOUR_REPO/img/YOUR_PREVIEW.jpg">
+    <meta name="twitter:title"      content="Happy Birthday!">
+    <meta name="twitter:image"      content="https://DELE-BOY.github.io/HappyBirthday/img/YOUR_PREVIEW.jpg">
     <link rel="icon" href="data:,">
 
     <!-- Font performance: preconnect reduces handshake time; display=swap prevents FOIT -->
@@ -715,8 +715,8 @@
                 <div class="cover-title">Happy Birthday</div>
                 <div class="cover-line"></div>
                 <div class="cover-sub">From many hearts, these few words</div>
-                <div class="cover-teaser">Who's the birthday girl? You're the birthday girl!! 🎉</div>
-                <div class="cover-hint">tap to open ✨</div>
+                <div class="cover-teaser">Who's the birthday girl? You're the birthday girl!!</div>
+                <div class="cover-hint">tap to open</div>
             </div>
         </div>
     </div>
@@ -735,14 +735,13 @@
     -->
     <div class="ending-overlay" id="endingOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="endingTitle">
         <div class="ending-content">
-            <span class="ending-emoji" aria-hidden="true">🎂</span>
             <h2 class="ending-title" id="endingTitle">That's everyone!</h2>
             <p class="ending-message" id="endingMessage"></p>
             <div class="ending-divider" aria-hidden="true"></div>
 
             <div class="ending-actions">
                 <button class="ending-replay" onclick="replayCards()">Read Again ↩</button>
-                <button class="ending-gallery" onclick="goToGallery()">View Gallery 📸</button>
+                <button class="ending-gallery" onclick="goToGallery()">View Gallery</button>
             </div>
 
             <!--
@@ -751,7 +750,7 @@
                 Cancelled immediately if the user clicks either button.
             -->
             <div class="gallery-hint" id="galleryHint" aria-hidden="true">
-                <p class="hint-label" id="hintLabel">📸 Gallery opens in 8s</p>
+                <p class="hint-label" id="hintLabel">Gallery opens in 8s</p>
                 <div class="countdown-track" aria-hidden="true">
                     <div class="countdown-bar" id="countdownBar"></div>
                 </div>
@@ -767,13 +766,17 @@
          * (it never had one), so its badge is simply omitted.
          */
         const birthdayMessages = [
-            { author: 'Person 1', message: "Hiiiii, Happy Happy Birthdayy!<br>I'm not going to get sentimental in public, but I just wanted to say you're the most amazing, helpful, caring, beautiful soul, and I pray that everything you touch prospers and that all your heart's desires are granted. In Jesus' name, Amen." },
-            { author: 'Person 2', message: "Happy Birthday, Demi! Although we've only had one conversation, I could tell how smart and insightful you are, and I appreciate all the help you gave, even though you don't even know me.<br>I wish you joy, happiness, and all your heart's desires." },
-            { author: 'Person 3', message: "Happy Birthday, Demilade!<br>I pray you continue to excel in everything you do.<br>From one first-class Babcock student to another:<br>REAL RECOGNIZE REAL!" },
-            { author: 'Person 4', message: "Hiiiiii! Happy Birthdayyy!<br>I know we've never spoken, but I've heard so much about how amazing you are, and I pray your life is filled with love and all the beautiful things you inspire in other people." },
-            { author: 'Person 5', message: "Happy Birthday, Oluwademilade!<br>I pray you have the best year yet and continue to shine bright. Amen." },
-            { author: 'Person 6', message: "Happy Birthday, Demiii!<br>Thank you for being such an amazing person and for checking up on and taking care of me.<br>I wish you so many amazing things, and I pray you continue to flourish in all you do. I love you, and thank you for being my friend whom I can depend on." },
-            { author: '', message: "May this year bring you success and happiness! Cheers to another year of amazing adventures!<br>Happy Birthday, Oluwademilade!<br>I wish you all the best things in life." },
+            { author: 'Person 1', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
+            { author: 'Person 2', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
+            { author: 'Person 3', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
+            { author: 'Person 4', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
+            { author: 'Person 5', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
+            { author: 'Person 6', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
+            { author: 'Person 7', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
+            { author: 'Person 8', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
+            { author: 'Person 9', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
+            { author: 'Person 10', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
+            { author: '', message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut libero in enim feugiat suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;" },
         ];
 
         /*
@@ -818,10 +821,10 @@
             'linear-gradient(135deg, #B399D4, #E8C876)',                                      // 4 — lavender · gold
             'linear-gradient(135deg, #FF9E80, #E8C876)',                                      // 5 — coral · gold
             'linear-gradient(135deg, #FF7F6B, #C9A9E8)',                                      // 6 — coral · lavender
-            // 'linear-gradient(135deg, #FF7F6B, #14B8A6)',                                    // 7 — coral · teal
-            // 'linear-gradient(135deg, #C9A9E8, #14B8A6, #E8C876)',                           // 8 — lavender · teal · gold
-            // 'linear-gradient(135deg, #FF9E80, #B399D4, #E8C876)',                           // 9 — coral · lavender · gold
-            // 'linear-gradient(135deg, #FF7F6B, #14B8A6, #C9A227)',                           // 10 — coral · teal · gold
+            'linear-gradient(135deg, #FF7F6B, #14B8A6)',                                      // 7 — coral · teal
+            'linear-gradient(135deg, #C9A9E8, #14B8A6, #E8C876)',                           // 8 — lavender · teal · gold
+            'linear-gradient(135deg, #FF9E80, #B399D4, #E8C876)',                           // 9 — coral · lavender · gold
+            'linear-gradient(135deg, #FF7F6B, #14B8A6, #C9A227)',                           // 10 — coral · teal · gold
             // 'linear-gradient(135deg, #FF9E80, #C9A9E8, #2DD4BF)',                           // 11 — coral · lavender · teal
             // 'linear-gradient(45deg,  #C9A227, #14B8A6)',                                    // 12 — teal · gold (reversed angle)
             // 'linear-gradient(45deg,  #C9A9E8, #FF7F6B)',                                    // 13 — lavender · coral (reversed angle)
@@ -1040,7 +1043,7 @@
                     galleryTimerId = null;
                     goToGallery();
                 } else {
-                    label.textContent = `📸 Gallery opens in ${secs}s`;
+                    label.textContent = `Gallery opens in ${secs}s`;
                 }
             }, 1000);
 
