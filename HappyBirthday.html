@@ -58,7 +58,7 @@
             padding: clamp(0.3rem, 1.5svh, 1rem) clamp(0.5rem, 2vw, 1rem);
             box-sizing: border-box;
             overflow: hidden;
-            background: linear-gradient(135deg, #000000, #000000, #1c1c1c, #404040, #585858, #707070, #000000, #1c1c1c, #000000);
+            background: linear-gradient(135deg, #000000, #000000, #131c26, #1f2f3d, #2a4256, #35566d, #000000, #131c26, #000000);
         }
 
         .background {
@@ -82,39 +82,157 @@
             75%       { transform: translate(-10px, 10px); }
         }
 
-        /* Header compresses on short viewports before the card does */
-        .header {
+        /* ============================================================
+         * Book cover
+         *
+         * The masthead is no longer a static header — it's the front
+         * cover of a book that physically opens (via 3D rotateX, same
+         * technique as the envelope flap on index.html/Welcome.html) to
+         * reveal the first flashcard underneath. Cover and card share
+         * the exact same footprint: .cover sits absolutely positioned
+         * on top of .flashcard-container until it rotates open.
+         * ============================================================ */
+        .book-wrap {
+            position: relative;
+            width: min(600px, 90vw);
+            height: clamp(175px, 38svh, 350px);
+            perspective: 1400px;
+            perspective-origin: 50% 35%;
+            flex-shrink: 0;
+            margin-bottom: clamp(0.3rem, 1svh, 0.9rem);
+        }
+
+        /* Warm parchment-toned ghost pages behind the whole book —
+         * the visible edge of its inner pages, readable whether the
+         * cover is open or closed. */
+        .ghost-page {
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: linear-gradient(160deg, #e8dcc0, #d9c9a3);
+        }
+        .ghost-page.g1 { transform: translate(6px, 8px) rotate(-1.3deg); opacity: 0.22; z-index: 1; }
+        .ghost-page.g2 { transform: translate(-5px, 10px) rotate(1deg);  opacity: 0.12; z-index: 0; }
+
+        .book {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            border-radius: 16px;
+        }
+
+        .cover {
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            border: 1px solid rgba(201,169,79,0.35);
+            background: linear-gradient(160deg, #161616, #0d0d0d 55%, #161616);
+            box-shadow:
+                0 16px 40px rgba(0,0,0,0.55),
+                inset 0 0 60px rgba(201,169,79,0.025);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            flex-shrink: 1;
-            margin-bottom: clamp(0.3rem, 1.5svh, 1.25rem);
-            padding: 0 0.5rem;
+            padding: clamp(16px, 3vw, 26px);
+            z-index: 3;
+            transform-origin: top center;
+            backface-visibility: hidden;
+            transform: rotateX(0deg);
+            opacity: 1;
+            cursor: pointer;
+            transition:
+                transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.9s ease 0.25s,
+                box-shadow 0.3s ease;
         }
 
-        h1 {
+        .cover:hover {
+            box-shadow:
+                0 16px 40px rgba(0,0,0,0.55),
+                inset 0 0 60px rgba(201,169,79,0.025),
+                0 0 0 2px rgba(201,169,79,0.4);
+        }
+
+        .cover:focus-visible {
+            outline: 2px solid #c9a94f;
+            outline-offset: 4px;
+        }
+
+        .cover-hint {
+            margin-top: clamp(12px, 1.6svh, 18px);
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            color: rgba(201,169,79,0.55);
+            text-transform: uppercase;
+            animation: hintPulse 2.6s ease-in-out infinite;
+        }
+
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.5; }
+            50%       { opacity: 1; }
+        }
+
+        .book.open .cover {
+            transform: rotateX(-165deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .kicker {
+            font-size: clamp(0.6rem, 1.3vw, 0.72rem);
+            letter-spacing: 4px;
+            color: #c9a94f;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: clamp(6px, 1svh, 10px);
+        }
+
+        .cover-title {
             font-family: 'Dancing Script', cursive;
-            color: #000b4d;
-            text-shadow: 2px 2px 4px rgba(88, 87, 87, 0.3);
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #87CEEB, #ADD8E6, #3571ad, #0074D9, #87CEEB, #ADD8E6, #1E90FF, #00BFFF, #87CEEB, #ADD8E6);
-            border-radius: 15px;
-            /* min(4vw, 4.5svh): shrinks on BOTH narrow AND short screens */
-            font-size: clamp(1.1rem, min(4vw, 4.5svh), 3rem);
-            padding: clamp(8px, 1.2svh, 15px) clamp(12px, 2.5vw, 30px);
-            margin-bottom: clamp(0.25rem, 0.8svh, 1rem);
-            line-height: 1.3;
+            font-weight: 700;
+            font-size: clamp(1.6rem, 6vw, 2.6rem);
+            line-height: 1;
+            color: #e8c876;
+            text-shadow:
+                0 1px 0 rgba(255,240,200,0.25),
+                0 2px 3px rgba(0,0,0,0.6);
         }
 
-        .subheading {
-            color: goldenrod;
-            font-size: clamp(0.72rem, min(2vw, 2.2svh), 1.4rem);
-            font-weight: bold;
-            line-height: 1.4;
-            margin: 0;
+        .cover-line {
+            width: 64px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #c9a94f, transparent);
+            margin: clamp(10px, 1.5svh, 16px) auto;
+        }
+
+        .cover-sub {
+            font-size: clamp(0.62rem, 1.4vw, 0.72rem);
+            letter-spacing: 3px;
+            color: rgba(245,234,208,0.55);
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .cover-teaser {
+            margin-top: clamp(10px, 1.3svh, 14px);
+            padding-top: clamp(9px, 1.1svh, 12px);
+            border-top: 1px solid rgba(201,169,79,0.18);
+            font-size: clamp(0.72rem, 1.6vw, 0.85rem);
+            font-weight: 600;
+            color: #d9b95c;
         }
 
         /* Progress dots — replace the "1 / 8" text counter.
          * Dots are more scannable, feel physical, and convey progress
-         * without taking up vertical space. Generated by JS. */
+         * without taking up vertical space. Generated by JS.
+         *
+         * Starts invisible: revealed via .visible once the book cover
+         * opens, so progress isn't shown before there's anything to
+         * have progress through. */
         .card-counter {
             display: flex;
             gap: clamp(6px, 1.5vw, 10px);
@@ -123,7 +241,11 @@
             margin-bottom: clamp(0.2rem, 0.8svh, 0.65rem);
             padding: 4px 0; /* room for the spring scale on .active dot */
             flex-shrink: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
+
+        .card-counter.visible { opacity: 1; }
 
         .card-dot {
             width: clamp(6px, 1.2vw, 8px);
@@ -145,18 +267,16 @@
         }
 
         /*
-         * Flashcard container height is now svh-based:
-         * 38svh → ~258px at 680px viewport (13-inch with chrome)
-         *       → ~342px at 900px viewport (iPad/large laptop)
-         * Both comfortably fit within the screen.
+         * flashcard-container now fills .book's footprint exactly
+         * (position: absolute; inset: 0), sitting BEHIND .cover until
+         * the cover rotates open. Sizing lives on .book-wrap now;
+         * this just needs to match it edge-to-edge.
          */
         .flashcard-container {
-            width: min(700px, 93vw);
-            height: clamp(175px, 38svh, 350px);
+            position: absolute;
+            inset: 0;
             perspective: 1500px;
             z-index: 1;
-            margin-bottom: clamp(0.2rem, 0.8svh, 0.75rem);
-            flex-shrink: 0;
         }
 
         .flashcard {
@@ -181,6 +301,9 @@
             color: white;
             text-align: center;
             border-radius: 16px;
+            /* Fallback only — JS sets the real per-card gradient via
+               gradientForCard() in showCard()/init. This is just what
+               renders before the first script tick. */
             background: linear-gradient(135deg, #ADD8E6, #0074D9, #1E90FF, #00BFFF, #87CEEB, #ADD8E6);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
@@ -283,7 +406,11 @@
             user-select: none;
             margin: 0;
             flex-shrink: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
+
+        .nav-hint.visible { opacity: 1; }
 
         .decorations {
             position: fixed;
@@ -317,9 +444,9 @@
             .nav-hint { display: none; }
         }
 
-        /* Landscape phone: hide subheading to reclaim vertical space */
+        /* Landscape phone: hide the least essential cover text to reclaim vertical space */
         @media (max-height: 500px) {
-            .subheading { display: none; }
+            .cover-sub, .cover-teaser, .kicker { display: none; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -329,6 +456,9 @@
             .ending-emoji     { animation: none; }
             .ending-overlay   { transition: none; }
             .card-dot         { transition: none; }
+            .cover            { transition: none; }
+            .cover-hint       { animation: none; opacity: 0.75; }
+            .card-counter, .nav-hint { transition: none; }
         }
 
         /* ============================================================
@@ -539,38 +669,59 @@
             /* transition is set by JS once the countdown starts */
         }
     </style>
+</head>
 <body>
     <div class="background" aria-hidden="true"></div>
     <div class="decorations" aria-hidden="true"></div>
 
-    <header class="header">
-        <h1>
-            Happy Birthday!🎉🎉🎉🎈🎂<br>
-            <span style="color:#000418;">From many hearts, these few words</span>
-        </h1>
-        <p class="subheading">Who's the birthday girl? You're the birthday girl!! 🎉</p>
-    </header>
+    <div class="book-wrap">
+        <div class="ghost-page g2" aria-hidden="true"></div>
+        <div class="ghost-page g1" aria-hidden="true"></div>
 
-    <div class="card-counter" id="cardCounter" aria-live="polite" aria-label="Message 1 of 7"></div>
-
-    <div class="flashcard-container" role="region" aria-label="Birthday messages">
-        <div class="flashcard" id="flashcard1">
-            <div class="flashcard-front">
-                <div class="content" id="frontContent"></div>
-                <nav class="navigation">
-                    <button onclick="prevCard()" aria-label="Previous message">← Previous</button>
-                    <button onclick="nextCard()" aria-label="Next message">Next →</button>
-                </nav>
+        <div class="book" id="book">
+            <div class="flashcard-container" role="region" aria-label="Birthday messages">
+                <div class="flashcard" id="flashcard1">
+                    <div class="flashcard-front">
+                        <div class="content" id="frontContent"></div>
+                        <nav class="navigation">
+                            <button onclick="prevCard()" aria-label="Previous message">← Previous</button>
+                            <button onclick="nextCard()" aria-label="Next message">Next →</button>
+                        </nav>
+                    </div>
+                    <div class="flashcard-back" aria-hidden="true">
+                        <div class="content" id="backContent"></div>
+                        <nav class="navigation">
+                            <button onclick="prevCard()" aria-label="Previous message">← Previous</button>
+                            <button onclick="nextCard()" aria-label="Next message">Next →</button>
+                        </nav>
+                    </div>
+                </div>
             </div>
-            <div class="flashcard-back" aria-hidden="true">
-                <div class="content" id="backContent"></div>
-                <nav class="navigation">
-                    <button onclick="prevCard()" aria-label="Previous message">← Previous</button>
-                    <button onclick="nextCard()" aria-label="Next message">Next →</button>
-                </nav>
+
+            <!--
+                The cover — front of the book. Fully overlays the
+                flashcard-container above until clicked/activated.
+                role="button" + tabindex + keydown handler mirror the
+                envelope's accessibility pattern on index.html.
+            -->
+            <div class="cover"
+                 id="bookCover"
+                 role="button"
+                 tabindex="0"
+                 aria-label="Open the book to read the first message"
+                 onclick="openBook()"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openBook();}">
+                <div class="kicker">A Special Edition</div>
+                <div class="cover-title">Happy Birthday</div>
+                <div class="cover-line"></div>
+                <div class="cover-sub">From many hearts, these few words</div>
+                <div class="cover-teaser">Who's the birthday girl? You're the birthday girl!! 🎉</div>
+                <div class="cover-hint">tap to open ✨</div>
             </div>
         </div>
     </div>
+
+    <div class="card-counter" id="cardCounter" aria-live="polite" aria-label="Message 1 of 7"></div>
 
     <p class="nav-hint" aria-hidden="true">← → arrow keys &nbsp;·&nbsp; swipe on mobile</p>
 
@@ -637,6 +788,51 @@
             return badge + entry.message;
         }
 
+        /*
+         * ============================================================
+         * Card colour palette — up to 15 messages
+         * ============================================================
+         * Sequence tuned so ADJACENT cards always share at least one
+         * hue, creating a smooth colour chain as you flip through
+         * rather than jumping between unrelated tones:
+         *
+         *   1 (blue) → 2 (lavender·teal) → 3 (teal·gold) → 4 (lavender·gold)
+         *   → 5 (coral·gold) → 6 (coral·lavender) → 7 (gold·blue, CLOSER)
+         *
+         * Card 1 opens on blue (ties to the envelope pages). Whichever
+         * card ends up LAST — regardless of how many messages you have —
+         * automatically gets the gold→blue closing treatment via
+         * gradientForCard() below: a return to blue (bookending the
+         * journey) with a nod to the book cover's gold foil, marking
+         * it as the finale right before the ending screen appears.
+         *
+         * Extras for messages past 7 are commented out — uncomment as
+         * you add more. They continue the same coral/lavender/teal/gold
+         * family (some as three-colour blends, some as the same pairs
+         * re-angled) so new cards never feel like a different palette.
+         */
+        const CARD_GRADIENTS = [
+            'linear-gradient(135deg, #ADD8E6, #0074D9, #1E90FF, #00BFFF, #87CEEB, #ADD8E6)', // 1 — blue (opener)
+            'linear-gradient(135deg, #C9A9E8, #2DD4BF)',                                      // 2 — lavender · teal
+            'linear-gradient(135deg, #14B8A6, #C9A227)',                                      // 3 — teal · gold
+            'linear-gradient(135deg, #B399D4, #E8C876)',                                      // 4 — lavender · gold
+            'linear-gradient(135deg, #FF9E80, #E8C876)',                                      // 5 — coral · gold
+            'linear-gradient(135deg, #FF7F6B, #C9A9E8)',                                      // 6 — coral · lavender
+            // 'linear-gradient(135deg, #FF7F6B, #14B8A6)',                                    // 7 — coral · teal
+            // 'linear-gradient(135deg, #C9A9E8, #14B8A6, #E8C876)',                           // 8 — lavender · teal · gold
+            // 'linear-gradient(135deg, #FF9E80, #B399D4, #E8C876)',                           // 9 — coral · lavender · gold
+            // 'linear-gradient(135deg, #FF7F6B, #14B8A6, #C9A227)',                           // 10 — coral · teal · gold
+            // 'linear-gradient(135deg, #FF9E80, #C9A9E8, #2DD4BF)',                           // 11 — coral · lavender · teal
+            // 'linear-gradient(45deg,  #C9A227, #14B8A6)',                                    // 12 — teal · gold (reversed angle)
+            // 'linear-gradient(45deg,  #C9A9E8, #FF7F6B)',                                    // 13 — lavender · coral (reversed angle)
+        ];
+        const CLOSER_GRADIENT = 'linear-gradient(135deg, #E8C876, #0074D9)'; // gold · blue — always the LAST card
+
+        function gradientForCard(index) {
+            if (index === LAST) return CLOSER_GRADIENT;
+            return CARD_GRADIENTS[index] || CARD_GRADIENTS[CARD_GRADIENTS.length - 1];
+        }
+
         /* ── Customise the ending message here ────────────────────────────
          * HTML is supported. This appears on the finale screen after
          * the user has read through all the birthday messages.
@@ -652,7 +848,11 @@
         const flashcard      = document.getElementById('flashcard1');
         const frontContent   = document.getElementById('frontContent');
         const backContent    = document.getElementById('backContent');
+        const frontFace      = document.querySelector('.flashcard-front');
+        const backFace       = document.querySelector('.flashcard-back');
         const cardCounter    = document.getElementById('cardCounter');
+        const navHint        = document.querySelector('.nav-hint');
+        const book           = document.getElementById('book');
         const endingOverlay  = document.getElementById('endingOverlay');
         const endingMessage  = document.getElementById('endingMessage');
         const confettiLayer  = document.getElementById('confetti-layer');
@@ -661,6 +861,7 @@
         let flipAngle      = 0;   /* cumulative rotation angle — drives directional flips */
         let isAnimating    = false;
         let isEnding       = false;
+        let isBookOpen     = false; /* true once the cover has started opening */
         let galleryTimerId = null; /* setInterval handle for the auto-gallery countdown */
 
         const LAST = birthdayMessages.length - 1;
@@ -698,11 +899,14 @@
             const msg          = renderMessage(birthdayMessages[currentCard]);
             const frontVisible = ((flipAngle % 360) + 360) % 360 === 0;
 
-            /* Write to the hidden face before rotating */
+            /* Write to the hidden face before rotating — content AND
+               its gradient background travel together */
             if (frontVisible) {
-                backContent.innerHTML  = msg;
+                backContent.innerHTML = msg;
+                backFace.style.background = gradientForCard(currentCard);
             } else {
                 frontContent.innerHTML = msg;
+                frontFace.style.background = gradientForCard(currentCard);
             }
 
             flipAngle += dir === 'next' ? 180 : -180;
@@ -727,21 +931,22 @@
         }
 
         function nextCard() {
-            if (isEnding) return;
+            if (isEnding || isAnimating) return;
             if (currentCard === LAST) { showEnding(); return; }
             currentCard = (currentCard + 1) % birthdayMessages.length;
             showCard('next');
         }
 
         function prevCard() {
-            if (isEnding) return;
+            if (isEnding || isAnimating) return;
             currentCard = (currentCard - 1 + birthdayMessages.length) % birthdayMessages.length;
             showCard('prev');
         }
 
-        /* Guard: keyboard nav disabled while ending overlay is visible */
+        /* Guard: keyboard nav disabled while the book is still closed
+           or the ending overlay is visible */
         document.addEventListener('keydown', (e) => {
-            if (isEnding) return;
+            if (!isBookOpen || isEnding) return;
             if      (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextCard();
             else if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prevCard();
         });
@@ -752,9 +957,10 @@
             touchStartY = e.touches[0].clientY;
         }, { passive: true });
 
-        /* Guard: swipe nav disabled while ending overlay is visible */
+        /* Guard: swipe nav disabled while the book is still closed
+           or the ending overlay is visible */
         document.addEventListener('touchend', (e) => {
-            if (isEnding) return;
+            if (!isBookOpen || isEnding) return;
             const dx = touchStartX - e.changedTouches[0].clientX;
             const dy = touchStartY - e.changedTouches[0].clientY;
             if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
@@ -898,9 +1104,19 @@
             flipAngle   = 0;
             isAnimating = false;
             flashcard.style.transform = 'rotateY(0deg)';
+            frontFace.style.background = gradientForCard(0);
+            backFace.style.background  = gradientForCard(0);
             frontContent.innerHTML = renderMessage(birthdayMessages[0]);
             backContent.innerHTML  = renderMessage(birthdayMessages[0]);
             updateCounter();
+
+            /* Re-close the book — replay should feel like starting over
+               from the very beginning, not just jumping to card 1 with
+               the cover already open */
+            book.classList.remove('open');
+            isBookOpen = false;
+            cardCounter.classList.remove('visible');
+            navHint.classList.remove('visible');
         }
 
         /* ============================================================
@@ -945,12 +1161,36 @@
             cardCounter.appendChild(dot);
         });
 
+        frontFace.style.background = gradientForCard(0);
+        backFace.style.background  = gradientForCard(0);
         frontContent.innerHTML = renderMessage(birthdayMessages[0]);
         backContent.innerHTML  = renderMessage(birthdayMessages[0]);
         updateCounter();
         createBackground();
         animateBackground();
         createBalloons();
+
+        /*
+         * openBook() — triggered by clicking/activating the cover.
+         *
+         * Deliberately NOT auto-timed. An earlier version opened the
+         * cover automatically ~300ms after the curtain reveal finished,
+         * which left almost no window to actually see the closed cover
+         * before it started vanishing — easy to miss entirely. Click-to-
+         * open removes that timing race completely and matches the
+         * interaction language already established by the envelope on
+         * index.html: dark, gold-accented objects are things you open.
+         */
+        function openBook() {
+            if (isBookOpen) return;
+            isBookOpen = true;
+
+            if (window.SoundFX) SoundFX.playRustle();
+
+            book.classList.add('open');
+            cardCounter.classList.add('visible');
+            navHint.classList.add('visible');
+        }
     </script>
 </body>
 </html>
